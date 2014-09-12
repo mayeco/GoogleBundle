@@ -13,8 +13,8 @@ In parameters.yml
     google_adwordsapi_devkey: google_adwords_api_dev_token
     google_adwordsapi_version: google_adwords_api_version
 
-    google_adwordsapi_clientlib: mentalidad user agent
-    google_adwordsapi_useragent: mentalidad user lib agent
+    google_adwordsapi_clientlib: your_app_client_lib
+    google_adwordsapi_useragent: your_app_user_agent
     google_adwordsapi_oauthinfo:
         client_id: "%google_apiclient_clientid%"
         client_secret: "%google_apiclient_clientsecret%"
