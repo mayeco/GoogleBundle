@@ -16,7 +16,7 @@
         "php": ">=5.3.2",
         "sensio/framework-extra-bundle": "3.0.*@dev",
         "google/apiclient": "1.0.*@dev",
-        "googleads/googleads-php-lib": "dev-master"
+        "googleads/googleads-php-lib": "dev-master",
         "leaseweb/memcache-bundle": "*",
     },
     "autoload": {
