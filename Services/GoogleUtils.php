@@ -49,8 +49,19 @@ class GoogleUtils
 	
 		if(!$this->ValidateAdwordsOAuth2Info())
 			return;
-
-        return $this->adwordsuser->GetService($service, $this->adwordsversion);
+	
+		
+		try {
+		
+			$service = $this->adwordsuser->GetService($service, $this->adwordsversion);
+			
+		} catch (\Exception $e) {
+		
+			return;
+		}
+		
+        	
+		return $service;
 
 	}
 	
