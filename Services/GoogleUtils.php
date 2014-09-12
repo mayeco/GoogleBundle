@@ -7,7 +7,7 @@ use Lsw\MemcacheBundle\Cache\AntiDogPileMemcache;
 class GoogleUtils 
 {
 
-    protected $adwordsuser;
+	protected $adwordsuser;
 	protected $adwordsversion;
 	protected $apiclient;
 	protected $memcache;
@@ -81,7 +81,6 @@ class GoogleUtils
         } catch (\Exception $e) {
                 
             return;
-
         }
 
         $fulltoken = json_decode($jsontoken, true);
@@ -149,7 +148,7 @@ class GoogleUtils
         }
 
         return $fulltoken;
-        
+
     }
 
 }
