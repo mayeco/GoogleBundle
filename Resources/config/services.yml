@@ -1,0 +1,23 @@
+services:
+    google.apiclient:
+        class: %google_apiclient_class%
+        calls:
+            - [setClientId, ["%google_apiclient_clientid%"]]
+            - [setClientSecret, ["%google_apiclient_clientsecret%"]]
+            - [setRedirectUri, ["%google_apiclient_redirecturl%"]]
+            - [addScope, ["%google_apiclient_scope_userinfo%"]]
+            - [addScope, ["%google_adwordsapi_scope%"]]
+            - [setAccessType, ["offline"]]
+
+    google.adwordsapi:
+        class: %google_adwordsapi_class%
+        calls:
+            - [SetDeveloperToken, ["%google_adwordsapi_devkey%"]]
+            - [SetUserAgent, ["%google_adwordsapi_useragent%"]]
+            - [SetClientLibraryUserAgent, ["%google_adwordsapi_clientlib%"]]
+            - [SetOAuth2Info, ["%google_adwordsapi_oauthinfo%"]]
+            - [LogAll]
+
+    google.utils:
+        class: %google_utils_class%
+        arguments: ["@google.adwordsapi", "@google.apiclient", "@memcache.default", "%google_adwordsapi_version%"]

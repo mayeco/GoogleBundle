@@ -1,0 +1,31 @@
+{
+    "name": "mayeco/google-bundle",
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "description": "Google for Symfony2",
+    "keywords": ["google api"],
+    "homepage": "https://github.com/mayeco/GoogleBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mario Young",
+            "email": "yo@maye.co"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "sensio/framework-extra-bundle": "3.0.*@dev",
+        "google/apiclient": "1.0.*@dev",
+        "googleads/googleads-php-lib": "dev-master"
+        "leaseweb/memcache-bundle": "*",
+    },
+    "autoload": {
+        "psr-0": { "Mayeco\\GoogleBundle": "" }
+    },
+    "target-dir": "Mayeco/GoogleBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
