@@ -19,6 +19,62 @@ class GoogleUtils
         $this->adwordsversion = $adwordsversion;
         $this->memcache = $memcache;
     }
+    
+    public function ConvertMicrosInCsvDataReport($csvdata, $title = null) {
+        
+        //inicia conversion micros
+		$count = 0;
+		$costpos = array();
+		$tmpfname = tempnam(sys_get_temp_dir(), "ZZZ");
+		$outstream = fopen($tmpfname, "r+");
+		foreach(preg_split("/((\r?\n)|(\r\n?))/", $csvdata) as $line){
+			
+			if($count == 0) {
+				$count++;
+				if($title) {
+				    fputcsv($outstream, array($title));
+				}
+
+				continue;
+			}
+			
+			$linearray = str_getcsv($line);
+
+			if($count == 1) {
+				//this is header
+				$postvalue = 0;
+
+				foreach($linearray as $value){
+					if (strpos($value,'Cost') !== false) {
+						$costpos[] = $postvalue;
+					}
+					$postvalue++;
+				}
+
+				fputcsv($outstream, $linearray);
+				$count++;
+				continue;
+			}
+			
+			if(!empty($costpos)) {
+
+				foreach($costpos as $costpostval){
+
+					if(isset($linearray[$costpostval])) {
+						$linearray[$costpostval] = $linearray[$costpostval] / 1000000;
+					}
+
+				}
+			}
+
+			fputcsv($outstream, $linearray);
+			$count++;
+		}
+		
+        fclose($outstream);
+        
+        return $tmpfname;
+    }
 
 
     public function DownloadReportWithAwql($awql) {
