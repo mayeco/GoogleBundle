@@ -20,6 +20,26 @@ class GoogleUtils
         $this->memcache = $memcache;
     }
 
+
+    public function DownloadReportWithAwql($awql) {
+
+		if(!$this->ValidateAdwordsOAuth2Info())
+			return;
+	
+		$report = null;
+		try {
+
+            $options = array('version' => $this->adwordsversion);
+            $report = \ReportUtils::DownloadReportWithAwql($awql, NULL, $this->adwordsuser, "CSV", $options);
+			
+		} catch (\Exception $e) {
+		
+			return;
+		}
+		
+		return $report;
+	}
+
     public function setAdwordsOAuth2Validate($refreshToken, $accessToken) {
 
         $oauth = $this->adwordsuser->GetOAuth2Info();
@@ -49,7 +69,7 @@ class GoogleUtils
 	
 		if(!$this->ValidateAdwordsOAuth2Info())
 			return;
-	
+
 		
 		try {
 		
@@ -59,10 +79,8 @@ class GoogleUtils
 		
 			return;
 		}
-		
-        	
-		return $service;
 
+		return $service;
 	}
 	
 	public function GetAdwordsUser() {
