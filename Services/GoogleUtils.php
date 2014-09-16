@@ -77,7 +77,7 @@ class GoogleUtils
     }
 
 
-    public function DownloadReportWithAwql($awql) {
+    public function DownloadReportWithAwql($awql, $format="CSV") {
 
 		if(!$this->ValidateAdwordsOAuth2Info())
 			return;
@@ -86,7 +86,7 @@ class GoogleUtils
 		try {
 
             $options = array('version' => $this->adwordsversion);
-            $report = \ReportUtils::DownloadReportWithAwql($awql, NULL, $this->adwordsuser, "CSV", $options);
+            $report = \ReportUtils::DownloadReportWithAwql($awql, NULL, $this->adwordsuser, $format, $options);
 			
 		} catch (\Exception $e) {
 		
