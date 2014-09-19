@@ -14,9 +14,9 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "google/apiclient": "dev-master",
+        "google/apiclient": "1.0.*@dev",
         "googleads/googleads-php-lib": "dev-master",
-        "leaseweb/memcache-bundle": "*"
+        "leaseweb/memcache-bundle": "1.1.*@dev"
     },
     "autoload": {
         "psr-0": { "Mayeco\\GoogleBundle": "" }
