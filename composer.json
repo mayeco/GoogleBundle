@@ -14,7 +14,7 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "google/apiclient": "1.0.*@dev",
+        "google/apiclient": "dev-master",
         "googleads/googleads-php-lib": "dev-master",
         "leaseweb/memcache-bundle": "*"
     },
