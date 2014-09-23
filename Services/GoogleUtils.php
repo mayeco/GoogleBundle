@@ -274,7 +274,6 @@ class GoogleUtils
 
     }
     
-
     public function GetCampaigns() {
 
         $campaignService = $this->GetAdwordsService('CampaignService');
@@ -309,6 +308,47 @@ class GoogleUtils
 
     }
 
-    
+    function GetTextAds($adGroupId = null, $onlyenabled = true, $bannertype = array("TEXT_AD")) {
+
+        $adGroupAdService = $this->GetAdwordsService('AdGroupAdService');
+
+        if (!$adGroupAdService) {
+            return;
+        }
+
+        $selector = new \Selector();
+        $selector->fields = array('Headline', 'Id');
+        $selector->ordering[] = new \OrderBy('Headline', 'ASCENDING');
+
+        if($onlyenabled) {
+            $selector->predicates[] = new \Predicate('Status', 'EQUALS', "ENABLED");
+        }
+
+        if(!empty(trim($adGroupId))) {
+            $selector->predicates[] = new \Predicate('AdGroupId', 'IN', array($adGroupId));
+        }
+
+        $selector->predicates[] = new \Predicate('AdType', 'IN', $bannertype);
+
+        $selector->paging = new \Paging(0, \AdWordsConstants::RECOMMENDED_PAGE_SIZE);
+
+        $ads = array();
+        do {
+
+            $page = $adGroupAdService->get($selector);
+            if (isset($page->entries)) {
+                foreach ($page->entries as $adGroupAd) {
+                    $ads[] = $adGroupAd->ad;
+                }
+            } else {
+                return;
+            }
+
+            $selector->paging->startIndex += \AdWordsConstants::RECOMMENDED_PAGE_SIZE;
+        } while ($page->totalNumEntries > $selector->paging->startIndex);
+
+        return $ads;
+
+    }
 
 }
