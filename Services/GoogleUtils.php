@@ -351,4 +351,46 @@ class GoogleUtils
 
     }
 
+    function GetKeywords($adGroupId = null) {
+
+        $adGroupCriterionService = $this->GetAdwordsService('AdGroupCriterionService');
+
+        if (!$adGroupCriterionService) {
+            return;
+        }
+
+        $selector = new \Selector();
+        $selector->fields = array('Id', 'KeywordText', 'KeywordMatchType');
+        $selector->ordering[] = new \OrderBy('KeywordText', 'ASCENDING');
+
+        if(!empty(trim($adGroupId))){
+            $selector->predicates[] = new \Predicate('AdGroupId', 'IN', array($adGroupId));
+        }
+
+        $selector->predicates[] = new \Predicate('CriteriaType', 'IN', array('KEYWORD'));
+        $selector->paging = new \Paging(0, 50);
+
+        $keywords = array();
+        $pagenumber = 0;
+        do {
+
+            $page = $adGroupCriterionService->get($selector);
+            if (isset($page->entries)) {
+                foreach ($page->entries as $adGroupCriterion) {
+                    $keywords[] = $adGroupCriterion->criterion;
+                }
+            } else {
+                return;
+            }
+
+            $pagenumber++;
+            if($pagenumber > 0)
+                return $keywords;
+
+            $selector->paging->startIndex += \AdWordsConstants::RECOMMENDED_PAGE_SIZE;
+        } while ($page->totalNumEntries > $selector->paging->startIndex);
+
+        return $keywords;
+    }
+
 }
