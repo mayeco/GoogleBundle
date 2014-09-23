@@ -236,4 +236,42 @@ class GoogleUtils
 
     }
 
+    function GetAdGroups($campaignId = null) {
+
+        $adGroupService = $this->GetAdwordsService('AdGroupService');
+
+        if (!$adGroupService) {
+            return;
+        }
+
+        $selector = new \Selector();
+        $selector->fields = array('Id', 'Name');
+        $selector->ordering[] = new \OrderBy('Name', 'ASCENDING');
+        $selector->predicates[] = new \Predicate('Status', 'EQUALS', "ENABLED");
+
+        if(!empty(trim($campaignId))) {
+            $selector->predicates[] = new \Predicate('CampaignId', 'IN', array($campaignId));
+        }
+
+        $selector->paging = new \Paging(0, \AdWordsConstants::RECOMMENDED_PAGE_SIZE);
+
+        $adgrouparray = array();
+        do {
+
+            $page = $adGroupService->get($selector);
+            if (isset($page->entries)) {
+                foreach ($page->entries as $adGroup) {
+                    $adgrouparray[] = $adGroup;
+                }
+            } else {
+                return;
+            }
+
+            $selector->paging->startIndex += \AdWordsConstants::RECOMMENDED_PAGE_SIZE;
+        } while ($page->totalNumEntries > $selector->paging->startIndex);
+
+        return $adgrouparray;
+
+    }
+
 }
