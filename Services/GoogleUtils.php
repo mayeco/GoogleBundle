@@ -273,5 +273,42 @@ class GoogleUtils
         return $adgrouparray;
 
     }
+    
+
+    public function GetCampaigns() {
+
+        $campaignService = $this->GetAdwordsService('CampaignService');
+
+        if (!$campaignService) {
+            return;
+        }
+
+        // Create selector.
+        $selector = new \Selector();
+        $selector->fields = array('Id', 'Name');
+        $selector->ordering[] = new \OrderBy('Name', 'ASCENDING');
+        $selector->predicates[] = new \Predicate('Status', 'EQUALS', "ENABLED");
+        $selector->paging = new \Paging(0, \AdWordsConstants::RECOMMENDED_PAGE_SIZE);
+
+        $campaignarray = array();
+        do {
+
+            $page = $campaignService->get($selector);
+            if (isset($page->entries)) {
+                foreach ($page->entries as $campaign) {
+                    $campaignarray[] = $campaign;
+                }
+            } else {
+                return;
+            }
+
+            $selector->paging->startIndex += \AdWordsConstants::RECOMMENDED_PAGE_SIZE;
+        } while ($page->totalNumEntries > $selector->paging->startIndex);
+
+        return $campaignarray;
+
+    }
+
+    
 
 }
