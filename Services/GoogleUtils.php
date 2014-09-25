@@ -45,7 +45,7 @@ class GoogleUtils
                 $postvalue = 0;
 
                 foreach($linearray as $value){
-                    if (strpos($value,'Cost') !== false) {
+                    if (strripos($value,'cost') !== false || strripos($value,'cpc') !== false) {
                         $costpos[] = $postvalue;
                     }
                     $postvalue++;
