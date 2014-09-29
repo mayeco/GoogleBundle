@@ -16,7 +16,6 @@ services:
             - [SetUserAgent, ["%google_adwordsapi_useragent%"]]
             - [SetClientLibraryUserAgent, ["%google_adwordsapi_clientlib%"]]
             - [SetOAuth2Info, ["%google_adwordsapi_oauthinfo%"]]
-            - [LogAll]
 
     google.utils:
         class: %google_utils_class%
