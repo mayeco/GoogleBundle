@@ -222,11 +222,6 @@ class GoogleUtils
         }
 
         $fulltoken = json_decode($jsontoken, true);
-        if(!isset($fulltoken["access_token"]) || empty(trim($fulltoken["access_token"]))) {
-
-            return;
-        }
-
         if(!$this->setAdwordsOAuth2Validate($refreshToken, $fulltoken["access_token"])) {
 
             return;
