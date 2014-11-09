@@ -11,7 +11,6 @@ add your settings to parameters.yml
 
         google_adwordsapi_clientlib: your_app_client_lib
         google_adwordsapi_useragent: your_app_user_agent
-        google_utils_class: Mayeco\GoogleBundle\Services\GoogleUtils
 
 add a new import to config.yml:
 
