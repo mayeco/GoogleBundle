@@ -8,7 +8,6 @@ add your settings to parameters.yml
 
         google_adwordsapi_devkey: google_adwords_api_dev_token
         google_adwordsapi_version: google_adwords_api_version
-
         google_adwordsapi_clientlib: your_app_client_lib
         google_adwordsapi_useragent: your_app_user_agent
 
