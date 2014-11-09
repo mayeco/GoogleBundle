@@ -1,3 +1,8 @@
+parameters:
+    google_adwordsapi_oauthinfo:
+        client_id: "%google_apiclient_clientid%"
+        client_secret: "%google_apiclient_clientsecret%"
+
 services:
     google.apiclient:
         class: %google_apiclient_class%
