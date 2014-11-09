@@ -12,19 +12,6 @@ add your settings to parameters.yml
         google_adwordsapi_clientlib: your_app_client_lib
         google_adwordsapi_useragent: your_app_user_agent
 
-add a new import to config.yml:
-
-    - { resource: constants.php }
-    
-With this content:
-
-    <?php
-
-    // app/config/constants.php
-
-    $container->setParameter('google_apiclient_scope_userinfo', \Google_Service_Oauth2::USERINFO_EMAIL);
-    $container->setParameter('google_adwordsapi_scope', \AdWordsUser::OAUTH2_SCOPE);
-    
 Add your redirect URLs depending the enviroment, in config_dev.yml
 
     parameters:
