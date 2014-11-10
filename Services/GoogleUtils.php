@@ -167,7 +167,7 @@ class GoogleUtils
         }
 
         $fulltoken = json_decode($jsontoken, true);
-        if(!isset($fulltoken["access_token"]) || empty(trim($fulltoken["access_token"])))
+        if(!isset($fulltoken["access_token"]))
             return;
 
         $q = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" . $fulltoken["access_token"];
