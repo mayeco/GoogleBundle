@@ -111,7 +111,12 @@ class GoogleUtils
 
         $this->memcache->set($userinfo['id'] . '_token', $jsontoken, $fulltoken["expires_in"] - 30);
 
-        return array("jsontoken" => $jsontoken, "fulltoken" => $fulltoken, "tokendata" => $token_data, "userinfo" => $userinfo);
+        return array(
+            "jsontoken" => $jsontoken, 
+            "fulltoken" => $fulltoken, 
+            "tokendata" => $token_data, 
+            "userinfo" => $userinfo
+        );
     }
 
     public function Relogin($googleid, $refreshToken) {
