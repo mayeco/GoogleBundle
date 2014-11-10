@@ -81,7 +81,7 @@ class GoogleUtils
 
     public function DownloadReportWithAwql($awql, $format="CSV") {
 
-        if(!$this->ValidateAdwordsOAuth2Info())
+        if(!$this->ValidateUser())
             return;
 
         $report = null;
@@ -106,10 +106,10 @@ class GoogleUtils
 
         $this->adwordsuser->SetOAuth2Info($oauth);
 
-        return $this->ValidateAdwordsOAuth2Info();
+        return $this->ValidateUser();
     }
 
-    public function ValidateAdwordsOAuth2Info() {
+    public function ValidateUser() {
 
         try {
 
@@ -139,7 +139,7 @@ class GoogleUtils
 
     public function GetAdwordsUser() {
 
-        if(!$this->ValidateAdwordsOAuth2Info())
+        if(!$this->ValidateUser())
             return;
 
         return $this->adwordsuser;
