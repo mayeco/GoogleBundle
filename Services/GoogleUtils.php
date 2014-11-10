@@ -113,7 +113,7 @@ class GoogleUtils
 
         try {
 
-            $this->adwordsuser->ValidateOAuth2Info();
+            $this->adwordsuser->ValidateUser();
 
         } catch (\Exception $e) {
 
@@ -124,10 +124,6 @@ class GoogleUtils
     }
 
     public function GetAdwordsService($service) {
-
-        if(!$this->ValidateAdwordsOAuth2Info())
-            return;
-
 
         try {
 
