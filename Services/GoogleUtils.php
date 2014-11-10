@@ -29,7 +29,7 @@ class GoogleUtils
     
     public function DownloadReportWithAwql($awql, $format="CSV") {
         
-        if(!$this>ValidateUser())
+        if(!$this->ValidateUser())
             return;
         
         $report = null;
