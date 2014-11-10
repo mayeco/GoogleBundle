@@ -20,6 +20,7 @@ services:
             - [addScope, ["%google_apiclient_scope_userinfo%"]]
             - [addScope, ["%google_adwordsapi_scope%"]]
             - [setAccessType, ["offline"]]
+            - [setApprovalPrompt, ["force"]]
 
     google.adwordsapi:
         class: %google_adwordsapi_class%
