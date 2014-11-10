@@ -26,7 +26,7 @@ services:
         calls:
             - [SetDeveloperToken, ["%google_adwordsapi_devkey%"]]
             - [SetUserAgent, ["%google_adwordsapi_useragent%"]]
-            - [SetClientLibraryUserAgent, ["%google_adwordsapi_clientlib%"]]
+            - [SetClientLibraryUserAgent, ["%google_adwordsapi_useragent%"]]
             - [SetOAuth2Info, ["%google_adwordsapi_oauthinfo%"]]
 
     google.utils:
