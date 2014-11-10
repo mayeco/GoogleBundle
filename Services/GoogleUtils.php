@@ -2,6 +2,8 @@
 
 namespace Mayeco\GoogleBundle\Services;
 
+use Google_Client;
+use AdWordsUser;
 use Lsw\MemcacheBundle\Cache\AntiDogPileMemcache;
 
 class GoogleUtils
@@ -12,7 +14,7 @@ class GoogleUtils
     protected $apiclient;
     protected $memcache;
 
-    public function __construct(\AdWordsUser $adwordsuser, \Google_Client $apiclient, AntiDogPileMemcache $memcache, $adwordsversion) {
+    public function __construct(AdWordsUser $adwordsuser, Google_Client $apiclient, AntiDogPileMemcache $memcache, $adwordsversion) {
 
         $this->adwordsuser = $adwordsuser;
         $this->apiclient = $apiclient;
