@@ -89,6 +89,7 @@ class GoogleUtils
         try {
 
             $jsontoken = $this->apiclient->authenticate($code);
+            $token_data = $this->apiclient->verifyIdToken()->getAttributes();
 
         } catch (\Exception $e) {
 
@@ -110,7 +111,7 @@ class GoogleUtils
 
         $this->memcache->set($userinfo['id'] . '_token', $jsontoken, $fulltoken["expires_in"] - 30);
 
-        return array("jsontoken" => $jsontoken, "fulltoken" => $fulltoken, "userinfo" => $userinfo);
+        return array("jsontoken" => $jsontoken, "fulltoken" => $fulltoken, "tokendata" => $token_data, "userinfo" => $userinfo);
     }
 
     public function Relogin($googleid, $refreshToken) {
