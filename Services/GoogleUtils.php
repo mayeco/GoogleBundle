@@ -14,88 +14,17 @@ class GoogleUtils
     protected $apiclient;
     protected $memcache;
 
-    public function __construct(AdWordsUser $adwordsuser, Google_Client $apiclient, AntiDogPileMemcache $memcache, $adwordsversion) {
+    public function __construct(
+        AdWordsUser $adwordsuser, 
+        Google_Client $apiclient, 
+        AntiDogPileMemcache $memcache, 
+        $adwordsversion
+    ) {
 
         $this->adwordsuser = $adwordsuser;
         $this->apiclient = $apiclient;
-        $this->adwordsversion = $adwordsversion;
         $this->memcache = $memcache;
-    }
-
-    public function ConvertMicrosInCsvDataReport($csvdata, $title = null) {
-
-        //inicia conversion micros
-        $count = 0;
-        $costpos = array();
-        $tmpfname = tempnam(sys_get_temp_dir(), "ZZZ");
-        $outstream = fopen($tmpfname, "r+");
-        foreach(preg_split("/((\r?\n)|(\r\n?))/", $csvdata) as $line){
-
-            if($count == 0) {
-                $count++;
-                if($title) {
-                    fputcsv($outstream, array($title));
-                }
-
-                continue;
-            }
-
-            $linearray = str_getcsv($line);
-
-            if($count == 1) {
-                //this is header
-                $postvalue = 0;
-
-                foreach($linearray as $value){
-                    if (strripos($value,'cost') !== false || strripos($value,'cpc') !== false) {
-                        $costpos[] = $postvalue;
-                    }
-                    $postvalue++;
-                }
-
-                fputcsv($outstream, $linearray);
-                $count++;
-                continue;
-            }
-
-            if(!empty($costpos)) {
-
-                foreach($costpos as $costpostval){
-
-                    if(isset($linearray[$costpostval])) {
-                        $linearray[$costpostval] = $linearray[$costpostval] / 1000000;
-                    }
-
-                }
-            }
-
-            fputcsv($outstream, $linearray);
-            $count++;
-        }
-
-        fclose($outstream);
-
-        return $tmpfname;
-    }
-
-
-    public function DownloadReportWithAwql($awql, $format="CSV") {
-
-        if(!$this->ValidateUser())
-            return;
-
-        $report = null;
-        try {
-
-            $options = array('version' => $this->adwordsversion);
-            $report = \ReportUtils::DownloadReportWithAwql($awql, NULL, $this->adwordsuser, $format, $options);
-
-        } catch (\Exception $e) {
-
-            return;
-        }
-
-        return $report;
+        $this->adwordsversion = $adwordsversion;
     }
 
     public function setAdwordsOAuth2Validate($refreshToken, $accessToken) {
@@ -151,7 +80,7 @@ class GoogleUtils
     }
 
     public function createAuthUrl() {
-
+        
         return $this->apiclient->createAuthUrl();
     }
 
@@ -227,163 +156,6 @@ class GoogleUtils
 
         return $fulltoken;
 
-    }
-
-    function GetAdGroups($campaignId = null) {
-
-        $adGroupService = $this->GetAdwordsService('AdGroupService');
-
-        if (!$adGroupService) {
-            return;
-        }
-
-        $selector = new \Selector();
-        $selector->fields = array('Id', 'Name');
-        $selector->ordering[] = new \OrderBy('Name', 'ASCENDING');
-        $selector->predicates[] = new \Predicate('Status', 'EQUALS', "ENABLED");
-
-        if(!empty(trim($campaignId))) {
-            $selector->predicates[] = new \Predicate('CampaignId', 'IN', array($campaignId));
-        }
-
-        $selector->paging = new \Paging(0, \AdWordsConstants::RECOMMENDED_PAGE_SIZE);
-
-        $adgrouparray = array();
-        do {
-
-            $page = $adGroupService->get($selector);
-            if (isset($page->entries)) {
-                foreach ($page->entries as $adGroup) {
-                    $adgrouparray[] = $adGroup;
-                }
-            } else {
-                return;
-            }
-
-            $selector->paging->startIndex += \AdWordsConstants::RECOMMENDED_PAGE_SIZE;
-        } while ($page->totalNumEntries > $selector->paging->startIndex);
-
-        return $adgrouparray;
-
-    }
-
-    public function GetCampaigns() {
-
-        $campaignService = $this->GetAdwordsService('CampaignService');
-
-        if (!$campaignService) {
-            return;
-        }
-
-        // Create selector.
-        $selector = new \Selector();
-        $selector->fields = array('Id', 'Name');
-        $selector->ordering[] = new \OrderBy('Name', 'ASCENDING');
-        $selector->predicates[] = new \Predicate('Status', 'EQUALS', "ENABLED");
-        $selector->paging = new \Paging(0, \AdWordsConstants::RECOMMENDED_PAGE_SIZE);
-
-        $campaignarray = array();
-        do {
-
-            $page = $campaignService->get($selector);
-            if (isset($page->entries)) {
-                foreach ($page->entries as $campaign) {
-                    $campaignarray[] = $campaign;
-                }
-            } else {
-                return;
-            }
-
-            $selector->paging->startIndex += \AdWordsConstants::RECOMMENDED_PAGE_SIZE;
-        } while ($page->totalNumEntries > $selector->paging->startIndex);
-
-        return $campaignarray;
-
-    }
-
-    function GetTextAds($adGroupId = null, $onlyenabled = true, $bannertype = array("TEXT_AD")) {
-
-        $adGroupAdService = $this->GetAdwordsService('AdGroupAdService');
-
-        if (!$adGroupAdService) {
-            return;
-        }
-
-        $selector = new \Selector();
-        $selector->fields = array('Headline', 'Id');
-        $selector->ordering[] = new \OrderBy('Headline', 'ASCENDING');
-
-        if($onlyenabled) {
-            $selector->predicates[] = new \Predicate('Status', 'EQUALS', "ENABLED");
-        }
-
-        if(!empty(trim($adGroupId))) {
-            $selector->predicates[] = new \Predicate('AdGroupId', 'IN', array($adGroupId));
-        }
-
-        $selector->predicates[] = new \Predicate('AdType', 'IN', $bannertype);
-
-        $selector->paging = new \Paging(0, \AdWordsConstants::RECOMMENDED_PAGE_SIZE);
-
-        $ads = array();
-        do {
-
-            $page = $adGroupAdService->get($selector);
-            if (isset($page->entries)) {
-                foreach ($page->entries as $adGroupAd) {
-                    $ads[] = $adGroupAd->ad;
-                }
-            } else {
-                return;
-            }
-
-            $selector->paging->startIndex += \AdWordsConstants::RECOMMENDED_PAGE_SIZE;
-        } while ($page->totalNumEntries > $selector->paging->startIndex);
-
-        return $ads;
-
-    }
-
-    function GetKeywords($adGroupId = null) {
-
-        $adGroupCriterionService = $this->GetAdwordsService('AdGroupCriterionService');
-
-        if (!$adGroupCriterionService) {
-            return;
-        }
-
-        $selector = new \Selector();
-        $selector->fields = array('Id', 'KeywordText', 'KeywordMatchType');
-        $selector->ordering[] = new \OrderBy('KeywordText', 'ASCENDING');
-
-        if(!empty(trim($adGroupId))){
-            $selector->predicates[] = new \Predicate('AdGroupId', 'IN', array($adGroupId));
-        }
-
-        $selector->predicates[] = new \Predicate('CriteriaType', 'IN', array('KEYWORD'));
-        $selector->paging = new \Paging(0, 50);
-
-        $keywords = array();
-        $pagenumber = 0;
-        do {
-
-            $page = $adGroupCriterionService->get($selector);
-            if (isset($page->entries)) {
-                foreach ($page->entries as $adGroupCriterion) {
-                    $keywords[] = $adGroupCriterion->criterion;
-                }
-            } else {
-                return;
-            }
-
-            $pagenumber++;
-            if($pagenumber > 0)
-                return $keywords;
-
-            $selector->paging->startIndex += \AdWordsConstants::RECOMMENDED_PAGE_SIZE;
-        } while ($page->totalNumEntries > $selector->paging->startIndex);
-
-        return $keywords;
     }
 
 }
