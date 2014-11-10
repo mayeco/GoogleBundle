@@ -25,6 +25,7 @@ services:
         class: %google_adwordsapi_class%
         calls:
             - [SetDeveloperToken, ["%google_adwordsapi_devkey%"]]
+            - [SetDefaultVersion, ["%google_adwordsapi_version%"]]
             - [SetUserAgent, ["%google_adwordsapi_useragent%"]]
             - [SetClientLibraryUserAgent, ["%google_adwordsapi_useragent%"]]
             - [SetOAuth2Info, ["%google_adwordsapi_oauthinfo%"]]
