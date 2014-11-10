@@ -17,6 +17,7 @@ services:
             - [setClientId, ["%google_apiclient_clientid%"]]
             - [setClientSecret, ["%google_apiclient_clientsecret%"]]
             - [setRedirectUri, ["%google_apiclient_redirecturl%"]]
+            - [setApplicationName, ["%google_adwordsapi_useragent%"]]
             - [addScope, ["%google_apiclient_scope_userinfo%"]]
             - [addScope, ["%google_adwordsapi_scope%"]]
             - [setAccessType, ["offline"]]
