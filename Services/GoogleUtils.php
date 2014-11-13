@@ -29,6 +29,10 @@ class GoogleUtils
     
     public function DownloadReportWithAwql($awql, $format="CSV") {
         
+        $allowformats = array("CSV", "XML", "TSV", "GZIPPED_CSV", "GZIPPED_XML");
+        if (!in_array($format, $allowformats))
+            return;
+        
         if(!$this->ValidateUser())
             return;
         
@@ -37,6 +41,9 @@ class GoogleUtils
             
             $report = \ReportUtils::DownloadReportWithAwql($awql, null, $this->adwordsuser, $format);
             
+            if("GZIPPED_CSV" == $format || "GZIPPED_XML" == $format)
+                $report = gzdecode ($report);
+
         } catch (\Exception $e) {
             
             return;
