@@ -35,7 +35,7 @@ class GoogleUtils
         $report = null;
         try {
             
-            $report = \ReportUtils::DownloadReportWithAwql($awql, null, $this>adwordsuser, $format);
+            $report = \ReportUtils::DownloadReportWithAwql($awql, null, $this->adwordsuser, $format);
             
         } catch (\Exception $e) {
             
