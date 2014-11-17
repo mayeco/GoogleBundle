@@ -129,8 +129,9 @@ class GoogleUtils
         $this->memcache->set($user_id . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
 
         return array(
-            "refresh_token" => $fulltoken["refresh_token"], 
             "user_id" => $user_id, 
+            "access_token" => $fulltoken["access_token"], 
+            "refresh_token" => $fulltoken["refresh_token"], 
         );
     }
 
@@ -166,6 +167,7 @@ class GoogleUtils
         }
 
         $fulltoken = json_decode($jsontoken, true);
+        $tokeninfo = null;
 
         try {
 
@@ -176,7 +178,7 @@ class GoogleUtils
             }
 
             $service = new \Google_Service_Oauth2($this->apiclient);
-            $service->tokeninfo(
+            $tokeninfo = $service->tokeninfo(
                 array(
                     "access_token" => $fulltoken["access_token"]
                 )
@@ -187,7 +189,7 @@ class GoogleUtils
             return;
         }
 
-        return true;
+        return $tokeninfo;
     }
 
 }
