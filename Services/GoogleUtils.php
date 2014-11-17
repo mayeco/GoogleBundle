@@ -170,8 +170,6 @@ class GoogleUtils
             $this->memcache->set($id . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
         }
 
-        $tokeninfo = null;
-
         try {
 
             $this->apiclient->setAccessToken($jsontoken);
@@ -191,8 +189,17 @@ class GoogleUtils
             $this->memcache->delete($id . '_token');
             return;
         }
-        
-        return $tokeninfo;
+
+        return array(
+            "accessType" => $tokeninfo->accessType, 
+            "audience" => $tokeninfo->audience, 
+            "email" => $tokeninfo->email, 
+            "expiresIn" => $tokeninfo->expiresIn, 
+            "issuedTo" => $tokeninfo->issuedTo, 
+            "scope" => $tokeninfo->scope, 
+            "userId" => $tokeninfo->userId, 
+            "verifiedEmail" => $tokeninfo->verifiedEmail, 
+        );
     }
 
 }
