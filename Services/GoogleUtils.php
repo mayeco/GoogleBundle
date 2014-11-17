@@ -165,18 +165,19 @@ class GoogleUtils
             $this->memcache->set($user_id . '_token', $jsontoken, $payload["exp"] - 60);
         }
 
+        $fulltoken = json_decode($jsontoken, true);
 
         try {
 
             $this->apiclient->setAccessToken($jsontoken);
-
+			
+			$service = new \Google_Service_Oauth2($this->apiclient);
+			$service->tokeninfo(array("access_token" => $fulltoken["access_token"]));
+			
+			if(!$this->setAdwordsOAuth2Validate($refreshToken, $fulltoken["access_token"]))
+				return;
+				
         } catch (\Exception $e) {
-
-            return;
-        }
-
-        $fulltoken = json_decode($jsontoken, true);
-        if(!$this->setAdwordsOAuth2Validate($refreshToken, $fulltoken["access_token"])) {
 
             return;
         }
