@@ -175,8 +175,9 @@ class GoogleUtils
             $this->apiclient->setAccessToken($jsontoken);
 
             $fulltoken = json_decode($jsontoken, true);
+            $fulltoken["refresh_token"] = $refreshToken;
             $this->setAdwordsOAuth2Validate($fulltoken);
-            
+
             $service = new \Google_Service_Oauth2($this->apiclient);
             $tokeninfo = $service->tokeninfo(
                 array(
