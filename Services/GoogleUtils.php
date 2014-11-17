@@ -169,7 +169,7 @@ class GoogleUtils
             }
             
             $fulltoken = json_decode($jsontoken, true);
-            $this->memcache->set($user_id . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
+            $this->memcache->set($id . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
         }
 
         $tokeninfo = null;
