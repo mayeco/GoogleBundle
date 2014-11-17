@@ -114,7 +114,8 @@ class GoogleUtils
         try {
 
             $jsontoken = $this->apiclient->authenticate($code);
-            $token_data = $this->apiclient->verifyIdToken()->getAttributes();
+            $verify_token = $this->apiclient->verifyIdToken();
+            $user_id = $verify_token->getUserId();
 
         } catch (\Exception $e) {
 
@@ -122,28 +123,17 @@ class GoogleUtils
         }
 
         $fulltoken = json_decode($jsontoken, true);
-        if(!isset($fulltoken["access_token"]))
+        if(!isset($fulltoken["access_token"]) || !isset($fulltoken["refresh_token"]))
             return;
 
-        $q = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" . $fulltoken["access_token"];
-        $json = file_get_contents($q);
-        if(false === $json)
-            return;
-
-        $userinfo = json_decode($json, true);
-        if(isset($userinfo['error']))
-            return;
-
-        $this->memcache->set($userinfo['id'] . '_token', $jsontoken, $fulltoken["expires_in"] - 30);
+        $this->memcache->set($user_id . '_token', $jsontoken, $fulltoken["expires_in"] - 30);
 
         return array(
-            "jsontoken" => $jsontoken, 
-            "fulltoken" => $fulltoken, 
-            "tokendata" => $token_data, 
-            "userinfo" => $userinfo
+            "refresh_token" => $fulltoken["refresh_token"], 
+            "user_id" => $user_id, 
         );
     }
-    
+
     public function setAdwordsId($adwordsid) {
         
         $this->adwordsuser->SetClientCustomerId($adwordsid);
@@ -192,7 +182,6 @@ class GoogleUtils
         }
 
         return $fulltoken;
-
     }
 
 }
