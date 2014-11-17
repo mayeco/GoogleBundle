@@ -132,14 +132,14 @@ class GoogleUtils
 
             $fulltoken = json_decode($jsontoken, true);
             $this->setAdwordsOAuth2Validate($fulltoken);
-            
-            $this->memcache->set($user_id . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
 
         } catch (\Exception $e) {
 
             return;
         }
-
+        
+        $this->memcache->set($user_id . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
+        
         return array(
             "user_id" => $user_id, 
             "access_token" => $fulltoken["access_token"], 
@@ -164,8 +164,6 @@ class GoogleUtils
                 $atributes = $verify_token->getAttributes();
                 $payload = $atributes["payload"];
                 
-                $this->memcache->set($user_id . '_token', $jsontoken, $payload["exp"] - 60);
-                
             } catch (\Exception $e) {
 
                 $this->memcache->delete($id . '_token');
@@ -174,6 +172,7 @@ class GoogleUtils
             
         }
 
+        $this->memcache->set($user_id . '_token', $jsontoken, $payload["exp"] - 60);
         $tokeninfo = null;
 
         try {
