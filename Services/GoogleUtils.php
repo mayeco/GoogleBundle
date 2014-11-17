@@ -112,6 +112,12 @@ class GoogleUtils
         return $this->apiclient->createAuthUrl();
     }
 
+    public function setAdwordsId($adwordsid) {
+        
+        $this->adwordsuser->SetClientCustomerId($adwordsid);
+        
+    }
+
     public function authenticate($code) {
 
         try {
@@ -140,12 +146,6 @@ class GoogleUtils
             "access_token" => $fulltoken["access_token"], 
             "refresh_token" => $fulltoken["refresh_token"], 
         );
-    }
-
-    public function setAdwordsId($adwordsid) {
-        
-        $this->adwordsuser->SetClientCustomerId($adwordsid);
-        
     }
 
     public function relogin($id, $refreshToken) {
