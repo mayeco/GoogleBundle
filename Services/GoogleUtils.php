@@ -171,18 +171,19 @@ class GoogleUtils
 
             $this->apiclient->setAccessToken($jsontoken);
             
+            if(!$this->setAdwordsOAuth2Validate($refreshToken, $fulltoken["access_token"])) {
+                return;
+            }
+
             $service = new \Google_Service_Oauth2($this->apiclient);
             $service->tokeninfo(
                 array(
                     "access_token" => $fulltoken["access_token"]
                 )
             );
-            
-            if(!$this->setAdwordsOAuth2Validate($refreshToken, $fulltoken["access_token"]))
-                return;
 				
         } catch (\Exception $e) {
-
+            
             return;
         }
 
