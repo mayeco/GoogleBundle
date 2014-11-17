@@ -155,9 +155,7 @@ class GoogleUtils
 
                 $this->apiclient->refreshToken($refreshToken);
                 $verify_token = $this->apiclient->verifyIdToken();
-                $user_id = $verify_token->getUserId();
-                
-                if($user_id != $id)
+                if($verify_token->getUserId() != $id)
                     return;
                 
                 $jsontoken = $this->apiclient->getAccessToken();
