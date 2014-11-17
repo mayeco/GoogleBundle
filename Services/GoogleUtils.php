@@ -125,6 +125,10 @@ class GoogleUtils
         $fulltoken = json_decode($jsontoken, true);
         if(!isset($fulltoken["access_token"]) || !isset($fulltoken["refresh_token"]))
             return;
+            
+        if(!$this->setAdwordsOAuth2Validate($fulltoken["refresh_token"], $fulltoken["access_token"])) {
+            return;
+        }
 
         $this->memcache->set($user_id . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
 
