@@ -27,7 +27,7 @@ class GoogleUtils
         $this->adwordsversion = $adwordsversion;
     }
     
-    public function DownloadReportWithAwql($awql, $format="CSV") {
+    public function DownloadReportWithAwql($reportQuery, $format="CSV", array $options = NULL) {
         
         $allowformats = array("CSV", "XML", "TSV", "GZIPPED_CSV", "GZIPPED_XML");
         if (!in_array($format, $allowformats))
@@ -39,7 +39,7 @@ class GoogleUtils
         $report = null;
         try {
             
-            $report = \ReportUtils::DownloadReportWithAwql($awql, null, $this->adwordsuser, $format);
+            $report = \ReportUtils::DownloadReportWithAwql($reportQuery, null, $this->adwordsuser, $format, $options);
             
             if("GZIPPED_CSV" == $format || "GZIPPED_XML" == $format)
                 $report = gzdecode ($report);
