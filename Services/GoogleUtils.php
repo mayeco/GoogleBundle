@@ -79,9 +79,12 @@ class GoogleUtils
 
     public function GetAdwordsService($service) {
 
+        if(!$this->ValidateUser())
+            return;
+            
         try {
 
-            $service = $this->adwordsuser->GetService($service, $this->adwordsversion);
+            $service = $this->adwordsuser->GetService($service);
 
         } catch (\Exception $e) {
 
