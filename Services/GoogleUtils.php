@@ -52,11 +52,15 @@ class GoogleUtils
         return $report;
     }
     
-    public function setAdwordsOAuth2Validate($refreshToken, $accessToken) {
+    public function setAdwordsOAuth2Validate($fulltoken) {
+        
+        if(!isset($fulltoken["access_token"]) || !isset($fulltoken["refresh_token"])) {
+            throw new \Exception('No access token or refresh token.');
+        }
 
         $oauth = $this->adwordsuser->GetOAuth2Info();
-        $oauth["refresh_token"] = $refreshToken;
-        $oauth["access_token"] = $accessToken;
+        $oauth["refresh_token"] = $fulltoken["refresh_token"];
+        $oauth["access_token"] = $fulltoken["access_token"];
 
         $this->adwordsuser->SetOAuth2Info($oauth);
 
@@ -126,16 +130,11 @@ class GoogleUtils
             $verify_token = $this->apiclient->verifyIdToken();
             $user_id = $verify_token->getUserId();
 
+            $fulltoken = json_decode($jsontoken, true);
+            $this->setAdwordsOAuth2Validate($fulltoken);
+
         } catch (\Exception $e) {
 
-            return;
-        }
-
-        $fulltoken = json_decode($jsontoken, true);
-        if(!isset($fulltoken["access_token"]) || !isset($fulltoken["refresh_token"]))
-            return;
-            
-        if(!$this->setAdwordsOAuth2Validate($fulltoken["refresh_token"], $fulltoken["access_token"])) {
             return;
         }
 
@@ -160,6 +159,7 @@ class GoogleUtils
 
             } catch (\Exception $e) {
 
+                $this->memcache->delete($id . '_token');
                 return;
             }
             
@@ -173,17 +173,15 @@ class GoogleUtils
             $this->memcache->set($user_id . '_token', $jsontoken, $payload["exp"] - 60);
         }
 
-        $fulltoken = json_decode($jsontoken, true);
         $tokeninfo = null;
 
         try {
 
             $this->apiclient->setAccessToken($jsontoken);
-            
-            if(!$this->setAdwordsOAuth2Validate($refreshToken, $fulltoken["access_token"])) {
-                return;
-            }
 
+            $fulltoken = json_decode($jsontoken, true);            
+            $this->setAdwordsOAuth2Validate($fulltoken);
+            
             $service = new \Google_Service_Oauth2($this->apiclient);
             $tokeninfo = $service->tokeninfo(
                 array(
@@ -193,6 +191,7 @@ class GoogleUtils
 				
         } catch (\Exception $e) {
             
+            $this->memcache->delete($id . '_token');
             return;
         }
 
