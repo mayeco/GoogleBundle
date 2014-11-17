@@ -126,7 +126,7 @@ class GoogleUtils
         if(!isset($fulltoken["access_token"]) || !isset($fulltoken["refresh_token"]))
             return;
 
-        $this->memcache->set($user_id . '_token', $jsontoken, $fulltoken["expires_in"] - 30);
+        $this->memcache->set($user_id . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
 
         return array(
             "refresh_token" => $fulltoken["refresh_token"], 
@@ -156,7 +156,7 @@ class GoogleUtils
             $jsontoken = $this->apiclient->getAccessToken();
             $fulltoken = json_decode($jsontoken, true);
 
-            $this->memcache->set($googleid . '_token', $jsontoken, $fulltoken["expires_in"] - 30);
+            $this->memcache->set($googleid . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
         }
 
 
