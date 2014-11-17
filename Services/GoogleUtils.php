@@ -140,23 +140,29 @@ class GoogleUtils
         
     }
 
-    public function relogin($googleid, $refreshToken) {
+    public function relogin($id, $refreshToken) {
 
-        if( !$jsontoken = $this->memcache->get($googleid . '_token')  ) {
+        if( !$jsontoken = $this->memcache->get($id . '_token')  ) {
 
             try {
 
                 $this->apiclient->refreshToken($refreshToken);
+                $verify_token = $this->apiclient->verifyIdToken();
+                $user_id = $verify_token->getUserId();
 
             } catch (\Exception $e) {
 
                 return;
             }
+            
+            if($user_id != $id)
+                return;
 
             $jsontoken = $this->apiclient->getAccessToken();
-            $fulltoken = json_decode($jsontoken, true);
+            $atributes = $verify_token->getAttributes();
+            $payload = $atributes["payload"];
 
-            $this->memcache->set($googleid . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
+            $this->memcache->set($user_id . '_token', $jsontoken, $payload["exp"] - 60);
         }
 
 
@@ -169,19 +175,13 @@ class GoogleUtils
             return;
         }
 
-
-        if($this->apiclient->isAccessTokenExpired()) {
-
-            return;
-        }
-
         $fulltoken = json_decode($jsontoken, true);
         if(!$this->setAdwordsOAuth2Validate($refreshToken, $fulltoken["access_token"])) {
 
             return;
         }
 
-        return $fulltoken;
+        return true;
     }
 
 }
