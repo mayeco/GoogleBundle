@@ -159,10 +159,8 @@ class GoogleUtils
                 
                 if($user_id != $id)
                     return;
-                    
+                
                 $jsontoken = $this->apiclient->getAccessToken();
-                $atributes = $verify_token->getAttributes();
-                $payload = $atributes["payload"];
                 
             } catch (\Exception $e) {
 
@@ -170,16 +168,17 @@ class GoogleUtils
                 return;
             }
             
+            $fulltoken = json_decode($jsontoken, true);
+            $this->memcache->set($user_id . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
         }
 
-        $this->memcache->set($user_id . '_token', $jsontoken, $payload["exp"] - 60);
         $tokeninfo = null;
 
         try {
 
             $this->apiclient->setAccessToken($jsontoken);
 
-            $fulltoken = json_decode($jsontoken, true);            
+            $fulltoken = json_decode($jsontoken, true);
             $this->setAdwordsOAuth2Validate($fulltoken);
             
             $service = new \Google_Service_Oauth2($this->apiclient);
@@ -194,7 +193,7 @@ class GoogleUtils
             $this->memcache->delete($id . '_token');
             return;
         }
-
+        
         return $tokeninfo;
     }
 
