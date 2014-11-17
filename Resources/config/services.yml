@@ -3,6 +3,7 @@ parameters:
         client_id: "%google_apiclient_clientid%"
         client_secret: "%google_apiclient_clientsecret%"
         
+    google_apiclient_scope_userinfo: email
     google_adwordsapi_scope: https://www.googleapis.com/auth/adwords
 
     google_apiclient_class: Google_Client
@@ -17,6 +18,7 @@ services:
             - [setClientSecret, ["%google_apiclient_clientsecret%"]]
             - [setRedirectUri, ["%google_apiclient_redirecturl%"]]
             - [setApplicationName, ["%google_adwordsapi_useragent%"]]
+            - [addScope, ["%google_apiclient_scope_userinfo%"]]
             - [addScope, ["%google_adwordsapi_scope%"]]
             - [setAccessType, ["offline"]]
             - [setApprovalPrompt, ["force"]]
