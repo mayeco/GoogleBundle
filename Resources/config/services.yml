@@ -14,8 +14,8 @@ services:
             - [setApplicationName, ["%mayeco_google.user_agent%"]]
             - [addScope, ["%mayeco_google.oauthinfo.scope.email%"]]
             - [addScope, ["%mayeco_google.oauthinfo.scope.adwords%"]]
-            - [setAccessType, ["offline"]]
-            - [setApprovalPrompt, ["force"]]
+            - [setAccessType, ["%mayeco_google.oauthinfo.access_type%"]]
+            - [setApprovalPrompt, ["%mayeco_google.oauthinfo.approval_prompt%"]]
 
     mayeco_google.adwordsuser:
         class: %mayeco_google.adwordsuser.class%
