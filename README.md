@@ -1,4 +1,4 @@
-GoogleBundle
+MayecoGoogleBundle
 ============
 
 add your settings to parameters.yml
