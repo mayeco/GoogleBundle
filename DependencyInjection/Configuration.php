@@ -20,9 +20,28 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('mayeco_google');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode
+            ->children()
+                ->scalarNode('user_agent')
+                    ->defaultValue('mayeco_google_bundle')
+                ->end()
+                ->arrayNode('oauth_info')
+                    ->isRequired()
+                    ->children()
+                        ->scalarNode('client_id')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('client_secret')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('redirect_url')->isRequired()->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+                ->arrayNode('adwords')
+                    ->isRequired()
+                    ->children()
+                        ->scalarNode('dev_token')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('lib_version')->defaultValue('v201409')->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }
