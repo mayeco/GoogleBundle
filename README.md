@@ -1,25 +1,18 @@
 MayecoGoogleBundle
 ============
 
-add your settings to parameters.yml
+add your settings to config.yml
 
-        google_apiclient_clientid: client_id_de_proyecto_en_google_apps
-        google_apiclient_clientsecret: client_secret_de_proyecto_en_google_apps
+    mayeco_google:
+        oauth_info:
+            client_id: client_id_de_proyecto_en_google_apps
+            client_secret: client_secret_de_proyecto_en_google_apps
+            redirect_url: 'http://www.YOUR_URL.com/authenticate'
+        adwords:
+            dev_token: google_adwords_api_dev_token
 
-        google_adwordsapi_devkey: google_adwords_api_dev_token
-        google_adwordsapi_version: google_adwords_api_version
-        google_adwordsapi_useragent: your_app_user_agent
+Add your redirect URLs for dev enviroment, in config_dev.yml
 
-Add your redirect URLs depending the enviroment, in config_dev.yml
-
-    parameters:
-        google_apiclient_redirecturl: 'http://www.YOUR_URL.com/app_dev.php/authenticate'
-        
-
-In your config_prod.yml use the production URL
-
-    parameters:
-        google_apiclient_redirecturl: 'http://www.YOUR_URL.com/authenticate'
-
-
-You can change the redirect url on the fly by using the function GetGoogleApi to get the GoogleClient object.
+    mayeco_google:
+        oauth_info:
+            redirect_url: 'http://www.YOUR_URL.com/app_dev.php/authenticate'
