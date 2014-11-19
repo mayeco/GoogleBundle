@@ -27,6 +27,8 @@ class MayecoGoogleExtension extends Extension
         $container->setParameter($this->getAlias() . ".oauthinfo.client_id", $config["oauth_info"]["client_id"]);
         $container->setParameter($this->getAlias() . ".oauthinfo.client_secret", $config["oauth_info"]["client_secret"]);
         $container->setParameter($this->getAlias() . ".oauthinfo.redirect_url", $config["oauth_info"]["redirect_url"]);
+        $container->setParameter($this->getAlias() . ".oauthinfo.access_type", $config["oauth_info"]["access_type"]);
+        $container->setParameter($this->getAlias() . ".oauthinfo.approval_prompt", $config["oauth_info"]["approval_prompt"]);
         
         $container->setParameter($this->getAlias() . ".oauthinfo.scope.email", \Google_Service_Oauth2::USERINFO_EMAIL);
         $container->setParameter($this->getAlias() . ".oauthinfo.scope.adwords", \AdWordsUser::OAUTH2_SCOPE);
