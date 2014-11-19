@@ -1,37 +1,31 @@
 parameters:
-    google_adwordsapi_oauthinfo:
-        client_id: "%google_apiclient_clientid%"
-        client_secret: "%google_apiclient_clientsecret%"
-        
-    google_apiclient_scope_mail: email
-    google_adwordsapi_scope: https://www.googleapis.com/auth/adwords
 
-    google_apiclient_class: Google_Client
-    google_adwordsapi_class: AdWordsUser
-    google_utils_class: Mayeco\GoogleBundle\Services\GoogleUtils
+    mayeco_google.apiclient.class: Google_Client
+    mayeco_google.adwordsuser.class: AdWordsUser
+    mayeco_google.utils.class: Mayeco\GoogleBundle\Services\GoogleUtils
 
 services:
-    google.apiclient:
-        class: %google_apiclient_class%
+    mayeco_google.apiclient:
+        class: %mayeco_google.apiclient.class%
         calls:
-            - [setClientId, ["%google_apiclient_clientid%"]]
-            - [setClientSecret, ["%google_apiclient_clientsecret%"]]
-            - [setRedirectUri, ["%google_apiclient_redirecturl%"]]
-            - [setApplicationName, ["%google_adwordsapi_useragent%"]]
-            - [addScope, ["%google_apiclient_scope_mail%"]]
-            - [addScope, ["%google_adwordsapi_scope%"]]
+            - [setClientId, ["%mayeco_google.oauthinfo.client_id%"]]
+            - [setClientSecret, ["%mayeco_google.oauthinfo.client_secret%"]]
+            - [setRedirectUri, ["%mayeco_google.oauthinfo.redirect_url%"]]
+            - [setApplicationName, ["%mayeco_google.user_agent%"]]
+            - [addScope, ["%mayeco_google.oauthinfo.scope.email%"]]
+            - [addScope, ["%mayeco_google.oauthinfo.scope.adwords%"]]
             - [setAccessType, ["offline"]]
             - [setApprovalPrompt, ["force"]]
 
-    google.adwordsapi:
-        class: %google_adwordsapi_class%
+    mayeco_google.adwordsuser:
+        class: %mayeco_google.adwordsuser.class%
         calls:
-            - [SetDeveloperToken, ["%google_adwordsapi_devkey%"]]
-            - [SetDefaultVersion, ["%google_adwordsapi_version%"]]
-            - [SetUserAgent, ["%google_adwordsapi_useragent%"]]
-            - [SetClientLibraryUserAgent, ["%google_adwordsapi_useragent%"]]
-            - [SetOAuth2Info, ["%google_adwordsapi_oauthinfo%"]]
+            - [SetDeveloperToken, ["%mayeco_google.adwords.dev_token%"]]
+            - [SetDefaultVersion, ["%mayeco_google.adwords.lib_version%"]]
+            - [SetUserAgent, ["%mayeco_google.user_agent%"]]
+            - [SetClientLibraryUserAgent, ["%mayeco_google.user_agent%"]]
+            - [SetOAuth2Info, ["%mayeco_google.oauthinfo%"]]
 
     google.utils:
-        class: %google_utils_class%
-        arguments: ["@google.adwordsapi", "@google.apiclient", "@memcache.default", "%google_adwordsapi_version%"]
+        class: %mayeco_google.utils.class%
+        arguments: ["@mayeco_google.adwordsuser", "@mayeco_google.apiclient", "@memcache.default", "%google_adwordsapi_version%"]
