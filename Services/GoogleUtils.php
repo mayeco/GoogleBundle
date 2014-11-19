@@ -10,21 +10,18 @@ class GoogleUtils
 {
 
     protected $adwordsuser;
-    protected $adwordsversion;
     protected $apiclient;
     protected $memcache;
 
     public function __construct(
         AdWordsUser $adwordsuser, 
         Google_Client $apiclient, 
-        MemcacheInterface $memcache, 
-        $adwordsversion
+        MemcacheInterface $memcache
     ) {
 
         $this->adwordsuser = $adwordsuser;
         $this->apiclient = $apiclient;
         $this->memcache = $memcache;
-        $this->adwordsversion = $adwordsversion;
     }
     
     public function DownloadReportWithAwql($reportQuery, $format="CSV", array $options = NULL) {
