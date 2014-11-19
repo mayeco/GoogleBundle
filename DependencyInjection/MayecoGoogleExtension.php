@@ -19,9 +19,28 @@ class MayecoGoogleExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $configuration = new Configuration();
+        $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
+        
+        $container->setParameter($this->getAlias() . ".user_agent", $config["user_agent"]);
+        
+        $container->setParameter($this->getAlias() . ".oauthinfo.client_id", $config["oauth_info"]["client_id"]);
+        $container->setParameter($this->getAlias() . ".oauthinfo.client_secret", $config["oauth_info"]["client_secret"]);
+        $container->setParameter($this->getAlias() . ".oauthinfo.redirect_url", $config["oauth_info"]["redirect_url"]);
+        
+        $container->setParameter($this->getAlias() . ".oauthinfo.scope.email", \Google_Service_Oauth2::USERINFO_EMAIL);
+        $container->setParameter($this->getAlias() . ".oauthinfo.scope.adwords", \AdWordsUser::OAUTH2_SCOPE);
 
+        $container->setParameter($this->getAlias() . ".oauthinfo",
+            array(
+                "client_id" => $config["oauth_info"]["client_id"],
+                "client_secret" => $config["oauth_info"]["client_secret"],
+            )
+        );
+
+        $container->setParameter($this->getAlias() . ".adwords.dev_token", $config["adwords"]["dev_token"]);
+        $container->setParameter($this->getAlias() . ".adwords.lib_version", $config["adwords"]["lib_version"]);
+        
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }
