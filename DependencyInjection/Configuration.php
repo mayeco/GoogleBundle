@@ -31,6 +31,8 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('client_id')->isRequired()->cannotBeEmpty()->end()
                         ->scalarNode('client_secret')->isRequired()->cannotBeEmpty()->end()
                         ->scalarNode('redirect_url')->isRequired()->cannotBeEmpty()->end()
+                        ->scalarNode('access_type')->defaultValue('offline')->cannotBeEmpty()->end()
+                        ->scalarNode('approval_prompt')->defaultValue('force')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
                 ->arrayNode('adwords')
