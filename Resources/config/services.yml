@@ -28,4 +28,4 @@ services:
 
     google.utils:
         class: %mayeco_google.utils.class%
-        arguments: ["@mayeco_google.adwordsuser", "@mayeco_google.apiclient", "@memcache.default", "%google_adwordsapi_version%"]
+        arguments: ["@mayeco_google.adwordsuser", "@mayeco_google.apiclient", "@memcache.default"]
