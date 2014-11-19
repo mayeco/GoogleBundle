@@ -19,9 +19,8 @@
         "leaseweb/memcache-bundle": "~1.0"
     },
     "autoload": {
-        "psr-0": { "Mayeco\\GoogleBundle": "" }
+        "psr-4": { "Mayeco\\GoogleBundle\\": "" }
     },
-    "target-dir": "Mayeco/GoogleBundle",
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
