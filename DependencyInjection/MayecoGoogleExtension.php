@@ -30,8 +30,12 @@ class MayecoGoogleExtension extends Extension
         $container->setParameter("mayeco_google.oauthinfo.access_type", $config["oauth_info"]["access_type"]);
         $container->setParameter("mayeco_google.oauthinfo.approval_prompt", $config["oauth_info"]["approval_prompt"]);
         
-        $container->setParameter("mayeco_google.oauthinfo.scope.email", \Google_Service_Oauth2::USERINFO_EMAIL);
-        $container->setParameter("mayeco_google.oauthinfo.scope.adwords", \AdWordsUser::OAUTH2_SCOPE);
+        $container->setParameter("mayeco_google.oauthinfo.scopes", 
+            array(
+                \Google_Service_Oauth2::USERINFO_EMAIL,
+                \AdWordsUser::OAUTH2_SCOPE
+            )
+        );
 
         $container->setParameter("mayeco_google.oauthinfo",
             array(
