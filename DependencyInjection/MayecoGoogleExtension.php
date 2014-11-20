@@ -22,26 +22,26 @@ class MayecoGoogleExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
         
-        $container->setParameter($this->getAlias() . ".user_agent", $config["user_agent"]);
+        $container->setParameter("mayeco_google.user_agent", $config["user_agent"]);
         
-        $container->setParameter($this->getAlias() . ".oauthinfo.client_id", $config["oauth_info"]["client_id"]);
-        $container->setParameter($this->getAlias() . ".oauthinfo.client_secret", $config["oauth_info"]["client_secret"]);
-        $container->setParameter($this->getAlias() . ".oauthinfo.redirect_url", $config["oauth_info"]["redirect_url"]);
-        $container->setParameter($this->getAlias() . ".oauthinfo.access_type", $config["oauth_info"]["access_type"]);
-        $container->setParameter($this->getAlias() . ".oauthinfo.approval_prompt", $config["oauth_info"]["approval_prompt"]);
+        $container->setParameter("mayeco_google.oauthinfo.client_id", $config["oauth_info"]["client_id"]);
+        $container->setParameter("mayeco_google.oauthinfo.client_secret", $config["oauth_info"]["client_secret"]);
+        $container->setParameter("mayeco_google.oauthinfo.redirect_url", $config["oauth_info"]["redirect_url"]);
+        $container->setParameter("mayeco_google.oauthinfo.access_type", $config["oauth_info"]["access_type"]);
+        $container->setParameter("mayeco_google.oauthinfo.approval_prompt", $config["oauth_info"]["approval_prompt"]);
         
-        $container->setParameter($this->getAlias() . ".oauthinfo.scope.email", \Google_Service_Oauth2::USERINFO_EMAIL);
-        $container->setParameter($this->getAlias() . ".oauthinfo.scope.adwords", \AdWordsUser::OAUTH2_SCOPE);
+        $container->setParameter("mayeco_google.oauthinfo.scope.email", \Google_Service_Oauth2::USERINFO_EMAIL);
+        $container->setParameter("mayeco_google.oauthinfo.scope.adwords", \AdWordsUser::OAUTH2_SCOPE);
 
-        $container->setParameter($this->getAlias() . ".oauthinfo",
+        $container->setParameter("mayeco_google.oauthinfo",
             array(
                 "client_id" => $config["oauth_info"]["client_id"],
                 "client_secret" => $config["oauth_info"]["client_secret"],
             )
         );
-
-        $container->setParameter($this->getAlias() . ".adwords.dev_token", $config["adwords"]["dev_token"]);
-        $container->setParameter($this->getAlias() . ".adwords.lib_version", $config["adwords"]["lib_version"]);
+        
+        $container->setParameter("mayeco_google.adwords.dev_token", $config["adwords"]["dev_token"]);
+        $container->setParameter("mayeco_google.adwords.lib_version", $config["adwords"]["lib_version"]);
         
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
