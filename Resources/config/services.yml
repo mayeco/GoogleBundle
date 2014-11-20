@@ -12,8 +12,7 @@ services:
             - [setClientSecret, ["%mayeco_google.oauthinfo.client_secret%"]]
             - [setRedirectUri, ["%mayeco_google.oauthinfo.redirect_url%"]]
             - [setApplicationName, ["%mayeco_google.user_agent%"]]
-            - [addScope, ["%mayeco_google.oauthinfo.scope.email%"]]
-            - [addScope, ["%mayeco_google.oauthinfo.scope.adwords%"]]
+            - [setScopes, ["%mayeco_google.oauthinfo.scopes%"]]
             - [setAccessType, ["%mayeco_google.oauthinfo.access_type%"]]
             - [setApprovalPrompt, ["%mayeco_google.oauthinfo.approval_prompt%"]]
 
