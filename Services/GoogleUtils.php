@@ -97,9 +97,6 @@ class GoogleUtils
 
     public function GetAdwordsUser() {
 
-        if(!$this->ValidateUser())
-            return;
-
         return $this->adwordsuser;
     }
 
@@ -116,10 +113,9 @@ class GoogleUtils
     public function setAdwordsId($adwordsid) {
         
         $this->adwordsuser->SetClientCustomerId($adwordsid);
-        
     }
 
-    public function authenticate($code) {
+    public function Authenticate($code) {
 
         try {
 
@@ -144,7 +140,7 @@ class GoogleUtils
         );
     }
 
-    public function relogin($id, $refreshToken) {
+    public function RefreshAccess($id, $refreshToken) {
 
         if( !$jsontoken = $this->memcache->get($id . '_token')  ) {
 
