@@ -32,8 +32,8 @@ class MayecoGoogleExtension extends Extension
         
         $container->setParameter("mayeco_google.oauthinfo.scopes", 
             array(
-                \Google_Service_Oauth2::USERINFO_EMAIL,
-                \AdWordsUser::OAUTH2_SCOPE
+                \Google_Service_Oauth2::USERINFO_EMAIL, 
+                \AdWordsUser::OAUTH2_SCOPE, 
             )
         );
 
