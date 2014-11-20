@@ -137,6 +137,7 @@ class GoogleUtils
             "user_id" => $user_id, 
             "access_token" => $fulltoken["access_token"], 
             "refresh_token" => $fulltoken["refresh_token"], 
+            "expires_in" => $fulltoken["expires_in"], 
         );
     }
 
