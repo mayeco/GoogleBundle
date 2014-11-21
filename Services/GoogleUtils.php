@@ -143,7 +143,7 @@ class GoogleUtils
     /**
      * @return Google_Client
      */
-    public function GetGoogleApi()
+    public function GetGoogleClient()
     {
         return $this->apiclient;
     }
