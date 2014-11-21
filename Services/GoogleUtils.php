@@ -53,25 +53,28 @@ class GoogleUtils
     public function DownloadReportWithAwql($reportQuery, $format = "CSV", array $options = NULL)
     {
         $allowformats = array("CSV", "XML", "TSV", "GZIPPED_CSV", "GZIPPED_XML");
-        if (!in_array($format, $allowformats))
-            return;
-
-        if (!$this->ValidateUser())
-            return;
-
-        $report = null;
-        try {
-
-            $report = \ReportUtils::DownloadReportWithAwql($reportQuery, null, $this->adwordsuser, $format, $options);
-
-            if ("GZIPPED_CSV" == $format || "GZIPPED_XML" == $format)
-                $report = gzdecode($report);
-
-        } catch (\Exception $e) {
-
+        if (!in_array($format, $allowformats)) {
             return;
         }
-
+        
+        if (!$this->ValidateUser()) {
+            return;
+        }
+        
+        $report = null;
+        try {
+            
+            $report = \ReportUtils::DownloadReportWithAwql($reportQuery, null, $this->adwordsuser, $format, $options);
+            
+            if ("GZIPPED_CSV" == $format || "GZIPPED_XML" == $format) {
+                $report = gzdecode($report);
+            }
+            
+        } catch (\Exception $e) {
+            
+            return;
+        }
+        
         return $report;
     }
 
@@ -85,13 +88,13 @@ class GoogleUtils
         if (!isset($fulltoken["access_token"]) || !isset($fulltoken["refresh_token"])) {
             throw new \Exception('No access token or refresh token.');
         }
-
+        
         $oauth = $this->adwordsuser->GetOAuth2Info();
         $oauth["refresh_token"] = $fulltoken["refresh_token"];
         $oauth["access_token"] = $fulltoken["access_token"];
-
+        
         $this->adwordsuser->SetOAuth2Info($oauth);
-
+        
         return $this->ValidateUser();
     }
 
@@ -101,11 +104,11 @@ class GoogleUtils
     public function ValidateUser()
     {
         try {
-
+            
             $this->adwordsuser->ValidateUser();
-
+            
         } catch (\Exception $e) {
-
+            
             return;
         }
 
@@ -117,18 +120,19 @@ class GoogleUtils
      */
     public function GetAdwordsService($service)
     {
-        if (!$this->ValidateUser())
-            return;
-
-        try {
-
-            $service = $this->adwordsuser->GetService($service);
-
-        } catch (\Exception $e) {
-
+        if (!$this->ValidateUser()) {
             return;
         }
-
+        
+        try {
+            
+            $service = $this->adwordsuser->GetService($service);
+            
+        } catch (\Exception $e) {
+            
+            return;
+        }
+        
         return $service;
     }
 
@@ -171,21 +175,21 @@ class GoogleUtils
     public function Authenticate($code)
     {
         try {
-
+            
             $jsontoken = $this->googleclient->authenticate($code);
             $verify_token = $this->googleclient->verifyIdToken();
             $user_id = $verify_token->getUserId();
-
+            
             $fulltoken = json_decode($jsontoken, true);
             $this->setAdwordsOAuth2Validate($fulltoken);
-
+            
         } catch (\Exception $e) {
-
+            
             return;
         }
-
+        
         $this->memcache->set($user_id . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
-
+        
         return array(
             "user_id" => $user_id,
             "access_token" => $fulltoken["access_token"],
@@ -202,18 +206,19 @@ class GoogleUtils
     public function RefreshAccess($id, $refreshToken)
     {
         if (!$jsontoken = $this->memcache->get($id . '_token')) {
-
+            
             try {
-
+                
                 $this->googleclient->refreshToken($refreshToken);
                 $verify_token = $this->googleclient->verifyIdToken();
-                if ($verify_token->getUserId() != $id)
+                if ($verify_token->getUserId() != $id) {
                     return;
-
+                }
+                
                 $jsontoken = $this->googleclient->getAccessToken();
-
+                
             } catch (\Exception $e) {
-
+                
                 $this->memcache->delete($id . '_token');
                 return;
             }
@@ -221,15 +226,15 @@ class GoogleUtils
             $fulltoken = json_decode($jsontoken, true);
             $this->memcache->set($id . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
         }
-
+        
         try {
-
+            
             $this->googleclient->setAccessToken($jsontoken);
-
+            
             $fulltoken = json_decode($jsontoken, true);
             $fulltoken["refresh_token"] = $refreshToken;
             $this->setAdwordsOAuth2Validate($fulltoken);
-
+            
             $service = new \Google_Service_Oauth2($this->googleclient);
             $tokeninfo = $service->tokeninfo(
                 array(
@@ -238,8 +243,9 @@ class GoogleUtils
             );
 
         } catch (\Exception $e) {
-
+            
             $this->memcache->delete($id . '_token');
+            
             return;
         }
 
