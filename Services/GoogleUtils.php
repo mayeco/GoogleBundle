@@ -21,7 +21,7 @@ class GoogleUtils
     /**
      * @var Google_Client
      */
-    protected $apiclient;
+    protected $googleclient;
     
     /**
      * @var MemcacheInterface
@@ -30,17 +30,17 @@ class GoogleUtils
 
     /**
      * @param AdWordsUser $adwordsuser
-     * @param Google_Client $apiclient
+     * @param Google_Client $googleclient
      * @param MemcacheInterface $memcache
      */
     public function __construct(
         AdWordsUser $adwordsuser,
-        Google_Client $apiclient,
+        Google_Client $googleclient,
         MemcacheInterface $memcache
     )
     {
         $this->adwordsuser = $adwordsuser;
-        $this->apiclient = $apiclient;
+        $this->googleclient = $googleclient;
         $this->memcache = $memcache;
     }
 
@@ -145,7 +145,7 @@ class GoogleUtils
      */
     public function GetGoogleClient()
     {
-        return $this->apiclient;
+        return $this->googleclient;
     }
 
     /**
@@ -153,7 +153,7 @@ class GoogleUtils
      */
     public function createAuthUrl()
     {
-        return $this->apiclient->createAuthUrl();
+        return $this->googleclient->createAuthUrl();
     }
 
     /**
@@ -172,8 +172,8 @@ class GoogleUtils
     {
         try {
 
-            $jsontoken = $this->apiclient->authenticate($code);
-            $verify_token = $this->apiclient->verifyIdToken();
+            $jsontoken = $this->googleclient->authenticate($code);
+            $verify_token = $this->googleclient->verifyIdToken();
             $user_id = $verify_token->getUserId();
 
             $fulltoken = json_decode($jsontoken, true);
@@ -205,12 +205,12 @@ class GoogleUtils
 
             try {
 
-                $this->apiclient->refreshToken($refreshToken);
-                $verify_token = $this->apiclient->verifyIdToken();
+                $this->googleclient->refreshToken($refreshToken);
+                $verify_token = $this->googleclient->verifyIdToken();
                 if ($verify_token->getUserId() != $id)
                     return;
 
-                $jsontoken = $this->apiclient->getAccessToken();
+                $jsontoken = $this->googleclient->getAccessToken();
 
             } catch (\Exception $e) {
 
@@ -224,13 +224,13 @@ class GoogleUtils
 
         try {
 
-            $this->apiclient->setAccessToken($jsontoken);
+            $this->googleclient->setAccessToken($jsontoken);
 
             $fulltoken = json_decode($jsontoken, true);
             $fulltoken["refresh_token"] = $refreshToken;
             $this->setAdwordsOAuth2Validate($fulltoken);
 
-            $service = new \Google_Service_Oauth2($this->apiclient);
+            $service = new \Google_Service_Oauth2($this->googleclient);
             $tokeninfo = $service->tokeninfo(
                 array(
                     "access_token" => $fulltoken["access_token"]
