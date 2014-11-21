@@ -50,7 +50,7 @@ class GoogleUtils
      * @param array $options
      * @return null|string|void
      */
-    public function DownloadReportWithAwql($reportQuery, $format = "CSV", array $options = NULL)
+    public function DownloadReportWithAwql($reportQuery, $format = "CSV", $path = null, array $options = null)
     {
         $allowformats = array("CSV", "XML", "TSV", "GZIPPED_CSV", "GZIPPED_XML");
         if (!in_array($format, $allowformats)) {
@@ -64,7 +64,7 @@ class GoogleUtils
         $report = null;
         try {
             
-            $report = \ReportUtils::DownloadReportWithAwql($reportQuery, null, $this->adwordsuser, $format, $options);
+            $report = \ReportUtils::DownloadReportWithAwql($reportQuery, $path, $this->adwordsuser, $format, $options);
             
             if ("GZIPPED_CSV" == $format || "GZIPPED_XML" == $format) {
                 $report = gzdecode($report);
