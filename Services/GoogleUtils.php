@@ -17,10 +17,12 @@ class GoogleUtils
      * @var AdWordsUser
      */
     protected $adwordsuser;
+    
     /**
      * @var Google_Client
      */
     protected $apiclient;
+    
     /**
      * @var MemcacheInterface
      */
