@@ -50,14 +50,14 @@ class GoogleUtils
      * @param array $options
      * @return null|string|void
      */
-    public function DownloadReportWithAwql($reportQuery, $format = "CSV", $path = null, array $options = null)
+    public function downloadReportWithAwql($reportQuery, $format = "CSV", $path = null, array $options = null)
     {
         $allowformats = array("CSV", "XML", "TSV", "GZIPPED_CSV", "GZIPPED_XML");
         if (!in_array($format, $allowformats)) {
             return;
         }
         
-        if (!$this->ValidateUser()) {
+        if (!$this->validateUser()) {
             return;
         }
         
@@ -95,13 +95,13 @@ class GoogleUtils
         
         $this->adwordsuser->SetOAuth2Info($oauth);
         
-        return $this->ValidateUser();
+        return $this->validateUser();
     }
 
     /**
      * @return bool|void
      */
-    public function ValidateUser()
+    public function validateUser()
     {
         try {
             
@@ -118,9 +118,9 @@ class GoogleUtils
     /**
      * @param $service
      */
-    public function GetAdwordsService($service)
+    public function getAdwordsService($service)
     {
-        if (!$this->ValidateUser()) {
+        if (!$this->validateUser()) {
             return;
         }
         
@@ -139,7 +139,7 @@ class GoogleUtils
     /**
      * @return AdWordsUser
      */
-    public function GetAdwordsUser()
+    public function getAdwordsUser()
     {
         return $this->adwordsuser;
     }
@@ -147,7 +147,7 @@ class GoogleUtils
     /**
      * @return Google_Client
      */
-    public function GetGoogleClient()
+    public function getGoogleClient()
     {
         return $this->googleclient;
     }
@@ -172,7 +172,7 @@ class GoogleUtils
      * @param $code
      * @return array|void
      */
-    public function Authenticate($code)
+    public function authenticateAccess($code)
     {
         try {
             
@@ -203,7 +203,7 @@ class GoogleUtils
      * @param $refreshToken
      * @return array|void
      */
-    public function RefreshAccess($id, $refreshToken)
+    public function refreshAccess($id, $refreshToken)
     {
         if (!$jsontoken = $this->memcache->get($id . '_token')) {
             
