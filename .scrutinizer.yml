@@ -1,8 +1,21 @@
-filter:
-    excluded_paths: [vendor/*, Tests/*, Resources/*]
-
 tools:
-    php_mess_detector: true
-    php_cpd: true
+    php_mess_detector:
+        enabled:                true
+        filter:
+            excluded_paths:
+                - 'vendor/*'
+    php_cpd:
+        enabled:                true
+        excluded_dirs:
+            - 'vendor'
     php_pdepend:
-        excluded_dirs: [vendor, Tests]
+        enabled:                true
+        excluded_dirs:
+            - vendor
+    php_cs_fixer:
+        enabled:                true
+        config:
+            level:              psr2
+        filter:
+            excluded_paths:
+                - 'vendor/*'
