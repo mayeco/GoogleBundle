@@ -21,19 +21,19 @@ class MayecoGoogleExtension extends Extension
     {
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
-        
+
         $container->setParameter("mayeco_google.user_agent", $config["user_agent"]);
-        
+
         $container->setParameter("mayeco_google.oauthinfo.client_id", $config["oauth_info"]["client_id"]);
         $container->setParameter("mayeco_google.oauthinfo.client_secret", $config["oauth_info"]["client_secret"]);
         $container->setParameter("mayeco_google.oauthinfo.redirect_url", $config["oauth_info"]["redirect_url"]);
         $container->setParameter("mayeco_google.oauthinfo.access_type", $config["oauth_info"]["access_type"]);
         $container->setParameter("mayeco_google.oauthinfo.approval_prompt", $config["oauth_info"]["approval_prompt"]);
-        
-        $container->setParameter("mayeco_google.oauthinfo.scopes", 
+
+        $container->setParameter("mayeco_google.oauthinfo.scopes",
             array(
-                \Google_Service_Oauth2::USERINFO_EMAIL, 
-                \AdWordsUser::OAUTH2_SCOPE, 
+                \Google_Service_Oauth2::USERINFO_EMAIL,
+                \AdWordsUser::OAUTH2_SCOPE,
             )
         );
 
@@ -43,10 +43,10 @@ class MayecoGoogleExtension extends Extension
                 "client_secret" => $config["oauth_info"]["client_secret"],
             )
         );
-        
+
         $container->setParameter("mayeco_google.adwords.dev_token", $config["adwords"]["dev_token"]);
         $container->setParameter("mayeco_google.adwords.lib_version", $config["adwords"]["lib_version"]);
-        
+
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
     }
