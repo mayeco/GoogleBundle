@@ -1,6 +1,8 @@
 MayecoGoogleBundle
 ============
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/0fb81cde-508c-4c86-a4e8-9f8e9ac0f715/big.png)](https://insight.sensiolabs.com/projects/0fb81cde-508c-4c86-a4e8-9f8e9ac0f715)
+
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mayeco/GoogleBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mayeco/GoogleBundle/?branch=master) [![Build Status](https://scrutinizer-ci.com/g/mayeco/GoogleBundle/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mayeco/GoogleBundle/build-status/master) [![Latest Stable Version](https://poser.pugx.org/mayeco/google-bundle/v/stable.svg)](https://packagist.org/packages/mayeco/google-bundle) [![Latest Unstable Version](https://poser.pugx.org/mayeco/google-bundle/v/unstable.svg)](https://packagist.org/packages/mayeco/google-bundle) [![License](https://poser.pugx.org/mayeco/google-bundle/license.svg)](https://packagist.org/packages/mayeco/google-bundle)
 
 add your settings to config.yml
