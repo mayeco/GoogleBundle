@@ -9,8 +9,8 @@ add your settings to config.yml
 
     mayeco_google:
         oauth_info:
-            client_id: client_id_de_proyecto_en_google_apps
-            client_secret: client_secret_de_proyecto_en_google_apps
+            client_id: client_id_de_proyecto_en_google_developer_console
+            client_secret: client_secret_de_proyecto_en_google_developer_console
             redirect_url: 'http://www.YOUR_URL.com/authenticate'
         adwords:
             dev_token: google_adwords_api_dev_token
