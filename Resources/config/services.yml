@@ -7,6 +7,7 @@ parameters:
 services:
     mayeco_google.apiclient:
         class: %mayeco_google.apiclient.class%
+        public: false
         calls:
             - [setClientId, ["%mayeco_google.oauthinfo.client_id%"]]
             - [setClientSecret, ["%mayeco_google.oauthinfo.client_secret%"]]
@@ -18,6 +19,7 @@ services:
 
     mayeco_google.adwordsuser:
         class: %mayeco_google.adwordsuser.class%
+        public: false
         calls:
             - [SetDeveloperToken, ["%mayeco_google.adwords.dev_token%"]]
             - [SetDefaultVersion, ["%mayeco_google.adwords.lib_version%"]]
