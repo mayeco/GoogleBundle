@@ -1,5 +1,4 @@
 parameters:
-
     mayeco_google.apiclient.class: Google_Client
     mayeco_google.adwordsuser.class: AdWordsUser
     mayeco_google.utils.class: Mayeco\GoogleBundle\Services\GoogleUtils
