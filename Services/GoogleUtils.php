@@ -185,7 +185,7 @@ class GoogleUtils
     public function authenticateAccess($code)
     {
         if(!$this->validateMemcache()) {
-            return false;
+            return;
         }
 
         try {
@@ -220,7 +220,7 @@ class GoogleUtils
     public function refreshAccess($id, $refreshToken)
     {
         if(!$this->validateMemcache()) {
-            return false;
+            return;
         }
 
         if (!$jsontoken = $this->memcache->get($id . '_token')) {
