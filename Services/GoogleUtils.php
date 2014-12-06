@@ -202,7 +202,9 @@ class GoogleUtils
             return;
         }
 
-        $this->memcache->set($user_id . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
+        if(!$this->memcache->set($user_id . '_token', $jsontoken, $fulltoken["expires_in"] - 60)) {
+            return;
+        }
 
         return array(
             "user_id" => $user_id,
@@ -242,7 +244,9 @@ class GoogleUtils
             }
 
             $fulltoken = json_decode($jsontoken, true);
-            $this->memcache->set($id . '_token', $jsontoken, $fulltoken["expires_in"] - 60);
+            if(!$this->memcache->set($id . '_token', $jsontoken, $fulltoken["expires_in"] - 60)) {
+                return;
+            }
         }
 
         try {
