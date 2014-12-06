@@ -83,7 +83,7 @@ class GoogleUtils
      * @return bool|void
      * @throws \Exception
      */
-    public function setAdwordsOAuth2Validate($fulltoken)
+    private function setAdwordsOAuth2Validate($fulltoken)
     {
         if (!isset($fulltoken["access_token"]) || !isset($fulltoken["refresh_token"])) {
             throw new \Exception('No access token or refresh token.');
@@ -101,7 +101,7 @@ class GoogleUtils
     /**
      * @return bool|void
      */
-    public function validateUser()
+    private function validateUser()
     {
         try {
 
@@ -113,6 +113,16 @@ class GoogleUtils
         }
 
         return true;
+    }
+    
+    private function validateMemcache()
+    {
+        $serverstats = $this->memcache->getStats();
+        foreach($serverstats as $server) {
+            if($server["pid"] > 0) {
+                return true;
+            }
+        }
     }
 
     /**
@@ -174,6 +184,10 @@ class GoogleUtils
      */
     public function authenticateAccess($code)
     {
+        if(!$this->validateMemcache()) {
+            return false;
+        }
+
         try {
 
             $jsontoken = $this->googleclient->authenticate($code);
@@ -205,6 +219,10 @@ class GoogleUtils
      */
     public function refreshAccess($id, $refreshToken)
     {
+        if(!$this->validateMemcache()) {
+            return false;
+        }
+
         if (!$jsontoken = $this->memcache->get($id . '_token')) {
 
             try {
