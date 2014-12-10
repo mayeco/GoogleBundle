@@ -1,11 +1,6 @@
-parameters:
-    mayeco_google.apiclient.class: Google_Client
-    mayeco_google.adwordsuser.class: AdWordsUser
-    mayeco_google.utils.class: Mayeco\GoogleBundle\Services\GoogleUtils
-
 services:
     mayeco_google.apiclient:
-        class: %mayeco_google.apiclient.class%
+        class: Google_Client
         public: false
         calls:
             - [setClientId, ["%mayeco_google.oauthinfo.client_id%"]]
@@ -17,7 +12,7 @@ services:
             - [setApprovalPrompt, ["%mayeco_google.oauthinfo.approval_prompt%"]]
 
     mayeco_google.adwordsuser:
-        class: %mayeco_google.adwordsuser.class%
+        class: AdWordsUser
         public: false
         calls:
             - [SetDeveloperToken, ["%mayeco_google.adwords.dev_token%"]]
@@ -27,5 +22,5 @@ services:
             - [SetOAuth2Info, ["%mayeco_google.oauthinfo%"]]
 
     google.utils:
-        class: %mayeco_google.utils.class%
+        class: Mayeco\GoogleBundle\Services\GoogleUtils
         arguments: ["@mayeco_google.adwordsuser", "@mayeco_google.apiclient", "@memcache.default"]
