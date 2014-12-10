@@ -166,6 +166,10 @@ class GoogleUtils
      */
     public function getAdwordsUser()
     {
+        if (!$this->validateUser()) {
+            return;
+        }
+
         return $this->adwordsuser;
     }
 
