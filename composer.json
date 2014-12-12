@@ -15,7 +15,7 @@
     "require": {
         "php": ">=5.5.0",
         "google/apiclient": "~1.1.0",
-        "googleads/googleads-php-lib": "~5.6.0",
+        "googleads/googleads-php-lib": "~5.7.0",
         "leaseweb/memcache-bundle": "~1.2.0"
     },
     "autoload": {
