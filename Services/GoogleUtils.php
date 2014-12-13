@@ -134,10 +134,12 @@ class GoogleUtils
     {
         $serverstats = $this->memcache->getStats();
         foreach($serverstats as $server) {
-            if($server["pid"] > 0) {
-                return true;
+            if($server["pid"] < 1) {
+                return false;
             }
         }
+        
+        return true;
     }
 
     /**
