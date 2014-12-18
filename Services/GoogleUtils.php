@@ -65,7 +65,7 @@ class GoogleUtils
      * @param array $options
      * @return null|string|void
      */
-    public function downloadReportWithAwql($reportQuery, $format = "CSV", $path = null, array $options = null)
+    public function downloadReportWithAwql($reportQuery, $format, $path = null, array $options = null)
     {
         $allowformats = array("CSV", "XML", "TSV", "GZIPPED_CSV", "GZIPPED_XML");
         if (!in_array($format, $allowformats)) {
