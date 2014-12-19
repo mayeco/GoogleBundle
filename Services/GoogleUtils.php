@@ -284,10 +284,7 @@ class GoogleUtils
         try {
 
             $this->googleclient->setAccessToken($jsontoken);
-            if(!$fulltoken) {
-                $fulltoken = json_decode($jsontoken, true);
-            }
-
+            $fulltoken = json_decode($jsontoken, true);
             $fulltoken["refresh_token"] = $refreshToken;
             $this->setAdwordsOAuth2Validate($fulltoken);
 
