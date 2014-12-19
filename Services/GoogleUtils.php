@@ -31,17 +31,22 @@ class GoogleUtils
     /**
      * @var AdWordsUser
      */
-    protected $adwordsuser;
+    private $adwordsuser;
 
     /**
      * @var Google_Client
      */
-    protected $googleclient;
+    private $googleclient;
 
     /**
      * @var MemcacheInterface
      */
-    protected $memcache;
+    private $memcache;
+
+    /**
+     * @var boolean
+     */
+    private $isrunningmemcache;
 
     /**
      * @param AdWordsUser $adwordsuser
@@ -57,6 +62,7 @@ class GoogleUtils
         $this->adwordsuser = $adwordsuser;
         $this->googleclient = $googleclient;
         $this->memcache = $memcache;
+        $this->isrunningmemcache = $this-checkMemcacheServers();
     }
 
     /**
@@ -91,6 +97,10 @@ class GoogleUtils
         }
 
         return $report;
+    }
+    
+    private function isRunningMemcache() {
+        return $this->isrunningmemcache;
     }
 
     /**
@@ -130,7 +140,7 @@ class GoogleUtils
         return true;
     }
     
-    private function validateMemcache()
+    private function checkMemcacheServers()
     {
         $serverstats = $this->memcache->getStats();
         foreach($serverstats as $server) {
@@ -205,7 +215,7 @@ class GoogleUtils
      */
     public function authenticateAccess($code)
     {
-        if(!$this->validateMemcache()) {
+        if(!$this->isRunningMemcache()) {
             return;
         }
 
@@ -242,7 +252,7 @@ class GoogleUtils
      */
     public function refreshAccess($id, $refreshToken)
     {
-        if(!$this->validateMemcache()) {
+        if(!$this->isRunningMemcache()) {
             return;
         }
 
