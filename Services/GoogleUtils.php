@@ -11,10 +11,10 @@
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  * MIT license.
  */
- 
+
 namespace Mayeco\GoogleBundle\Services;
 
 use Google_Client;
@@ -98,8 +98,9 @@ class GoogleUtils
 
         return $report;
     }
-    
-    private function isRunningMemcache() {
+
+    private function isRunningMemcache()
+    {
         return $this->isrunningmemcache;
     }
 
@@ -139,7 +140,7 @@ class GoogleUtils
 
         return true;
     }
-    
+
     private function checkMemcacheServers()
     {
         $serverstats = $this->memcache->getStats();
@@ -148,7 +149,7 @@ class GoogleUtils
                 return false;
             }
         }
-        
+
         return true;
     }
 
