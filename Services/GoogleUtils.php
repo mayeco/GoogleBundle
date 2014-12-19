@@ -62,7 +62,7 @@ class GoogleUtils
         $this->adwordsuser = $adwordsuser;
         $this->googleclient = $googleclient;
         $this->memcache = $memcache;
-        $this->isrunningmemcache = $this-checkMemcacheServers();
+        $this->isrunningmemcache = $this->checkMemcacheServers();
     }
 
     /**
