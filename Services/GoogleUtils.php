@@ -92,7 +92,6 @@ class GoogleUtils
             }
 
         } catch (\Exception $e) {
-
             return;
         }
 
@@ -134,7 +133,6 @@ class GoogleUtils
             $this->adwordsuser->ValidateUser();
 
         } catch (\Exception $e) {
-
             return;
         }
 
@@ -167,7 +165,6 @@ class GoogleUtils
             $service = $this->adwordsuser->GetService($service);
 
         } catch (\Exception $e) {
-
             return;
         }
 
@@ -230,7 +227,6 @@ class GoogleUtils
             $this->setAdwordsOAuth2Validate($fulltoken);
 
         } catch (\Exception $e) {
-
             return;
         }
 
@@ -270,7 +266,6 @@ class GoogleUtils
                 $jsontoken = $this->googleclient->getAccessToken();
 
             } catch (\Exception $e) {
-
                 $this->memcache->delete($id . '_token');
                 return;
             }
@@ -296,9 +291,7 @@ class GoogleUtils
             );
 
         } catch (\Exception $e) {
-
             $this->memcache->delete($id . '_token');
-
             return;
         }
 
