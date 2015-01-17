@@ -220,11 +220,18 @@ class GoogleUtils
         try {
 
             $jsontoken = $this->googleclient->authenticate($code);
-            $tokeninfo = $this->googleclient->verifyIdToken();
-            $user_id = $tokeninfo->getUserId();
+            $verify_token = $this->googleclient->verifyIdToken();
+            $user_id = $verify_token->getUserId();
 
             $fulltoken = json_decode($jsontoken, true);
             $this->setAdwordsOAuth2Validate($fulltoken);
+            
+            $service = new \Google_Service_Oauth2($this->googleclient);
+            $tokeninfo = $service->tokeninfo(
+                array(
+                    "access_token" => $fulltoken["access_token"]
+                )
+            );
 
         } catch (\Exception $e) {
             return;
