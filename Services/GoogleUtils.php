@@ -109,7 +109,7 @@ class GoogleUtils
         return $this->isrunningmemcache;
     }
 
-    private function GetLastException()
+    public function GetLastException()
     {
         return $this->lastexception;
     }
