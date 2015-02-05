@@ -49,6 +49,11 @@ class GoogleUtils
     private $isrunningmemcache;
 
     /**
+     * @var Exception
+     */
+    private $lastexception;
+
+    /**
      * @param AdWordsUser $adwordsuser
      * @param Google_Client $googleclient
      * @param MemcacheInterface $memcache
@@ -92,6 +97,7 @@ class GoogleUtils
             }
 
         } catch (\Exception $e) {
+            $this->lastexception = $e;
             return;
         }
 
@@ -101,6 +107,11 @@ class GoogleUtils
     private function isRunningMemcache()
     {
         return $this->isrunningmemcache;
+    }
+
+    private function GetLastException()
+    {
+        return $this->lastexception;
     }
 
     /**
@@ -133,6 +144,7 @@ class GoogleUtils
             $this->adwordsuser->ValidateUser();
 
         } catch (\Exception $e) {
+            $this->lastexception = $e;
             return;
         }
 
@@ -165,6 +177,7 @@ class GoogleUtils
             $service = $this->adwordsuser->GetService($service);
 
         } catch (\Exception $e) {
+            $this->lastexception = $e;
             return;
         }
 
@@ -234,6 +247,7 @@ class GoogleUtils
             );
 
         } catch (\Exception $e) {
+            $this->lastexception = $e;
             return;
         }
 
@@ -277,6 +291,7 @@ class GoogleUtils
                 $jsontoken = $this->googleclient->getAccessToken();
 
             } catch (\Exception $e) {
+                $this->lastexception = $e;
                 $this->memcache->delete($id . '_token');
                 return;
             }
@@ -302,6 +317,7 @@ class GoogleUtils
             );
 
         } catch (\Exception $e) {
+            $this->lastexception = $e;
             $this->memcache->delete($id . '_token');
             return;
         }
