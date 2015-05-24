@@ -19,6 +19,12 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.`
 
 add your settings to config.yml
 
+    doctrine_cache:
+        providers:
+            mayeco_google_tokens_cache:
+                type: memcached
+                namespace: tokens
+
     mayeco_google:
         oauth_info:
             client_id: client_id_de_proyecto_en_google_developer_console
