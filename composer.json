@@ -16,7 +16,7 @@
         "php": ">=5.5.0",
         "google/apiclient": "~1.1.4",
         "googleads/googleads-php-lib": "~6.0.0",
-        "leaseweb/memcache-bundle": "~1.2.0"
+        "doctrine/doctrine-cache-bundle": "~1.0.1"
     },
     "autoload": {
         "psr-4": { "Mayeco\\GoogleBundle\\": "" }
