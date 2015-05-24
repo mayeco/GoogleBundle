@@ -19,7 +19,7 @@ namespace Mayeco\GoogleBundle\Services;
 
 use Google_Client;
 use AdWordsUser;
-use Lsw\MemcacheBundle\Cache\MemcacheInterface;
+use Doctrine\Common\Cache\Cache;
 
 /**
  * @author Mario Young <maye.co@gmail.com>
@@ -39,14 +39,9 @@ class GoogleUtils
     private $googleclient;
 
     /**
-     * @var MemcacheInterface
+     * @var Cache
      */
-    private $memcache;
-
-    /**
-     * @var boolean
-     */
-    private $isrunningmemcache;
+    private $cache;
 
     /**
      * @var Exception
@@ -56,18 +51,17 @@ class GoogleUtils
     /**
      * @param AdWordsUser $adwordsuser
      * @param Google_Client $googleclient
-     * @param MemcacheInterface $memcache
+     * @param Cache $cache
      */
     public function __construct(
         AdWordsUser $adwordsuser,
         Google_Client $googleclient,
-        MemcacheInterface $memcache
+        Cache $cache
     )
     {
         $this->adwordsuser = $adwordsuser;
         $this->googleclient = $googleclient;
-        $this->memcache = $memcache;
-        $this->isrunningmemcache = $this->checkMemcacheServers();
+        $this->cache = $cache;
     }
 
     /**
@@ -102,11 +96,6 @@ class GoogleUtils
         }
 
         return $report;
-    }
-
-    private function isRunningMemcache()
-    {
-        return $this->isrunningmemcache;
     }
 
     public function getLastException()
@@ -146,18 +135,6 @@ class GoogleUtils
         } catch (\Exception $e) {
             $this->lastexception = $e;
             return;
-        }
-
-        return true;
-    }
-
-    private function checkMemcacheServers()
-    {
-        $serverstats = $this->memcache->getStats();
-        foreach($serverstats as $server) {
-            if($server["pid"] < 1) {
-                return false;
-            }
         }
 
         return true;
@@ -226,9 +203,6 @@ class GoogleUtils
      */
     public function authenticateAccess($code)
     {
-        if(!$this->isRunningMemcache()) {
-            return;
-        }
 
         try {
 
@@ -238,7 +212,7 @@ class GoogleUtils
 
             $fulltoken = json_decode($jsontoken, true);
             $this->setAdwordsOAuth2Validate($fulltoken);
-            
+
             $service = new \Google_Service_Oauth2($this->googleclient);
             $tokeninfo = $service->tokeninfo(
                 array(
@@ -251,7 +225,7 @@ class GoogleUtils
             return;
         }
 
-        if(!$this->memcache->set($user_id . '_token', $jsontoken, $fulltoken["expires_in"] - 60)) {
+        if(!$this->cache->save($user_id . '_token', $jsontoken, $fulltoken["expires_in"] - 60)) {
             return;
         }
 
@@ -274,11 +248,8 @@ class GoogleUtils
      */
     public function refreshAccess($id, $refreshToken)
     {
-        if(!$this->isRunningMemcache()) {
-            return;
-        }
-
-        if (!$jsontoken = $this->memcache->get($id . '_token')) {
+        $fromcache = true;
+        if (!$jsontoken = $this->cache->fetch($id . '_token')) {
 
             try {
 
@@ -292,12 +263,13 @@ class GoogleUtils
 
             } catch (\Exception $e) {
                 $this->lastexception = $e;
-                $this->memcache->delete($id . '_token');
+                $this->cache->delete($id . '_token');
                 return;
             }
 
+            $fromcache = false;
             $fulltoken = json_decode($jsontoken, true);
-            if(!$this->memcache->set($id . '_token', $jsontoken, $fulltoken["expires_in"] - 60)) {
+            if(!$this->cache->save($id . '_token', $jsontoken, $fulltoken["expires_in"] - 60)) {
                 return;
             }
         }
@@ -318,7 +290,7 @@ class GoogleUtils
 
         } catch (\Exception $e) {
             $this->lastexception = $e;
-            $this->memcache->delete($id . '_token');
+            $this->cache->delete($id . '_token');
             return;
         }
 
@@ -331,6 +303,7 @@ class GoogleUtils
             "scope" => $tokeninfo->scope,
             "userId" => $tokeninfo->userId,
             "verifiedEmail" => $tokeninfo->verifiedEmail,
+            "fromcache" => $fromcache,
         );
     }
 

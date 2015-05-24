@@ -23,4 +23,4 @@ services:
 
     google.utils:
         class: Mayeco\GoogleBundle\Services\GoogleUtils
-        arguments: ["@mayeco_google.adwordsuser", "@mayeco_google.apiclient", "@memcache.default"]
+        arguments: ["@mayeco_google.adwordsuser", "@mayeco_google.apiclient", "@doctrine_cache.providers.mayeco_google_tokens_cache"]
