@@ -45,11 +45,6 @@ class GoogleUtils
     private $cache;
 
     /**
-     * @var UrlGeneratorInterface
-     */
-    private $router;
-
-    /**
      * @var Exception
      */
     private $lastexception;
