@@ -29,12 +29,6 @@ add your settings to config.yml
         oauth_info:
             client_id: client_id_de_proyecto_en_google_developer_console
             client_secret: client_secret_de_proyecto_en_google_developer_console
-            redirect_url: 'http://www.YOUR_URL.com/authenticate'
+            redirect_url: client_redirect_app_route_google_developer_console
         adwords:
             dev_token: google_adwords_api_dev_token
-
-Add your redirect URLs for dev enviroment, in config_dev.yml
-
-    mayeco_google:
-        oauth_info:
-            redirect_url: 'http://www.YOUR_URL.com/app_dev.php/authenticate'

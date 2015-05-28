@@ -19,6 +19,7 @@ namespace Mayeco\GoogleBundle\Services;
 
 use Google_Client;
 use AdWordsUser;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Doctrine\Common\Cache\Cache;
 
 /**
@@ -44,6 +45,11 @@ class GoogleUtils
     private $cache;
 
     /**
+     * @var UrlGeneratorInterface
+     */
+    private $router;
+
+    /**
      * @var Exception
      */
     private $lastexception;
@@ -52,16 +58,22 @@ class GoogleUtils
      * @param AdWordsUser $adwordsuser
      * @param Google_Client $googleclient
      * @param Cache $cache
+     * @param UrlGeneratorInterface $router
+     * @param app_redirect_route
      */
     public function __construct(
         AdWordsUser $adwordsuser,
         Google_Client $googleclient,
-        Cache $cache
+        Cache $cache,
+        UrlGeneratorInterface $router,
+        $app_redirect_route
     )
     {
         $this->adwordsuser = $adwordsuser;
         $this->googleclient = $googleclient;
         $this->cache = $cache;
+        $redirect_url = $router->generate($app_redirect_route, array(), UrlGeneratorInterface::ABSOLUTE_URL);
+        $this->googleclient->setRedirectUri($redirect_url);
     }
 
     /**
