@@ -72,6 +72,34 @@ class GoogleUtils
     }
 
     /**
+     * @param $clientId
+     * @param \ReportDefinition $reportDefinition
+     * @param $path
+     * @param array $options
+     * @return null|string|void
+     */
+    public function downloadReport($clientId, \ReportDefinition $reportDefinition, $path = null, array $options = null)
+    {
+        if (!$this->validateUser()) {
+            return;
+        }
+
+        $this->setAdwordsId($clientId);
+
+        $report = null;
+        try {
+
+            $report = \ReportUtils::DownloadReport($reportDefinition, $path, $this->adwordsuser, $options);
+
+        } catch (\Exception $e) {
+            $this->lastexception = $e;
+            return;
+        }
+
+        return $report;
+    }
+
+    /**
      * @param $reportQuery
      * @param string $format
      * @param array $options
