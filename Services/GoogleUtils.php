@@ -91,6 +91,10 @@ class GoogleUtils
 
             $report = \ReportUtils::DownloadReport($reportDefinition, $path, $this->adwordsuser, $options);
 
+            if ("GZIPPED_CSV" == $format || "GZIPPED_XML" == $format) {
+                $report = gzdecode($report);
+            }
+
         } catch (\Exception $e) {
             $this->lastexception = $e;
             return;
