@@ -78,13 +78,14 @@ class GoogleUtils
      * @param array $options
      * @return null|string|void
      */
-    public function downloadReport($clientId, \ReportDefinition $reportDefinition, $path = null, array $options = null)
+    public function downloadReport($clientId, \ReportDefinition $reportDefinition, $format, $path = null, array $options = null)
     {
         if (!$this->validateUser()) {
             return;
         }
 
         $this->setAdwordsId($clientId);
+        $reportDefinition->downloadFormat = $format;
 
         $report = null;
         try {
