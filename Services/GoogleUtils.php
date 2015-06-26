@@ -348,7 +348,7 @@ class GoogleUtils
             "userId" => $tokeninfo->userId,
             "verifiedEmail" => $tokeninfo->verifiedEmail,
             "fromcache" => $fromcache,
-            "force" => $force
+            "force" => $force,
         );
     }
 
