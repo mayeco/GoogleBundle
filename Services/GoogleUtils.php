@@ -286,9 +286,13 @@ class GoogleUtils
      * @param $refreshToken
      * @return array|void
      */
-    public function refreshAccess($id, $refreshToken)
+    public function refreshAccess($id, $refreshToken, $force = false)
     {
         $fromcache = true;
+        if($force) {
+            $this->cache->delete($id . '_token');
+        }
+
         if (!$jsontoken = $this->cache->fetch($id . '_token')) {
 
             try {
@@ -344,6 +348,7 @@ class GoogleUtils
             "userId" => $tokeninfo->userId,
             "verifiedEmail" => $tokeninfo->verifiedEmail,
             "fromcache" => $fromcache,
+            "force" => $force
         );
     }
 
