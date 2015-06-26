@@ -80,6 +80,11 @@ class GoogleUtils
      */
     public function downloadReport($clientId, \ReportDefinition $reportDefinition, $format, $path = null, array $options = null)
     {
+        $allowformats = array("CSV", "XML", "TSV", "GZIPPED_CSV", "GZIPPED_XML");
+        if (!in_array($format, $allowformats)) {
+            return;
+        }
+
         if (!$this->validateUser()) {
             return;
         }
