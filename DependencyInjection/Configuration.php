@@ -86,7 +86,7 @@ class Configuration implements ConfigurationInterface
                             ->cannotBeEmpty()
                             ->defaultValue('v201506')
                             ->validate()
-                            ->ifNotInArray(array('v201506', 'v201502', 'v201409'))
+                            ->ifNotInArray(array('v201506', 'v201502'))
                                 ->thenInvalid('Invalid Adwords API version %s')
                             ->end()
                         ->end()
