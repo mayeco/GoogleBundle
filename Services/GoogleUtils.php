@@ -69,6 +69,7 @@ class GoogleUtils
         $this->cache = $cache;
         $redirect_url = $router->generate($app_redirect_route, array(), UrlGeneratorInterface::ABSOLUTE_URL);
         $this->googleclient->setRedirectUri($redirect_url);
+        $this->report_util = new \ReportUtils();
     }
 
     /**
@@ -95,7 +96,7 @@ class GoogleUtils
         $report = null;
         try {
 
-            $report = \ReportUtils::DownloadReport($reportDefinition, $path, $this->adwordsuser, $options);
+            $report = $this->report_util->DownloadReport($reportDefinition, $path, $this->adwordsuser, $options);
 
             if ("GZIPPED_CSV" == $format || "GZIPPED_XML" == $format) {
                 $report = gzdecode($report);
@@ -129,7 +130,7 @@ class GoogleUtils
         $report = null;
         try {
 
-            $report = \ReportUtils::DownloadReportWithAwql($reportQuery, $path, $this->adwordsuser, $format, $options);
+            $report = $this->report_util->DownloadReportWithAwql($reportQuery, $path, $this->adwordsuser, $format, $options);
 
             if ("GZIPPED_CSV" == $format || "GZIPPED_XML" == $format) {
                 $report = gzdecode($report);
